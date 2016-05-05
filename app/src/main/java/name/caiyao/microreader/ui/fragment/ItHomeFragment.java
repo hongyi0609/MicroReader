@@ -3,6 +3,7 @@ package name.caiyao.microreader.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,10 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
-import com.aspsine.swipetoloadlayout.OnRefreshListener;
-import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 
 import java.util.ArrayList;
 
@@ -32,7 +29,7 @@ import name.caiyao.microreader.utils.SharePreferenceUtil;
 /**
  * Created by 蔡小木 on 2016/3/24 0024.
  */
-public class ItHomeFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener, IItHomeFragment {
+public class ItHomeFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, IItHomeFragment {
 
 
     @BindView(R.id.progressBar)
@@ -40,7 +37,7 @@ public class ItHomeFragment extends BaseFragment implements OnRefreshListener, O
     @BindView(R.id.swipe_target)
     RecyclerView swipeTarget;
     @BindView(R.id.swipeToLoadLayout)
-    SwipeToLoadLayout swipeToLoadLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private Unbinder mUnbinder;
 
@@ -48,6 +45,9 @@ public class ItHomeFragment extends BaseFragment implements OnRefreshListener, O
     private ItAdapter itAdapter;
     private IItHomePresenter mItHomePresenter;
     private String currentNewsId = "0";
+    private LinearLayoutManager mLinearLayoutManager;
+    private boolean loading = false;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
 
     @Nullable
     @Override
@@ -65,10 +65,29 @@ public class ItHomeFragment extends BaseFragment implements OnRefreshListener, O
     }
 
     private void initView() {
-        swipeToLoadLayout.setOnRefreshListener(this);
-        swipeToLoadLayout.setOnLoadMoreListener(this);
-        swipeTarget.setLayoutManager(new LinearLayoutManager(getActivity()));
+        swipeRefreshLayout.setOnRefreshListener(this);
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        setSwipeRefreshLayoutColor(swipeRefreshLayout);
+        swipeTarget.setLayoutManager(mLinearLayoutManager);
         swipeTarget.setHasFixedSize(true);
+        swipeTarget.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) //向下滚动
+                {
+                    visibleItemCount = mLinearLayoutManager.getChildCount();
+                    totalItemCount = mLinearLayoutManager.getItemCount();
+                    pastVisiblesItems = mLinearLayoutManager.findFirstVisibleItemPosition();
+
+                    if (!loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = true;
+                            onLoadMore();
+                        }
+                    }
+                }
+            }
+        });
         itAdapter = new ItAdapter(getActivity(), itHomeItems);
         swipeTarget.setAdapter(itAdapter);
         mItHomePresenter.getNewsFromCache();
@@ -87,16 +106,12 @@ public class ItHomeFragment extends BaseFragment implements OnRefreshListener, O
         mItHomePresenter = new ItHomePresenterImpl(this, getActivity());
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mItHomePresenter.unsubcrible();
-    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+        mItHomePresenter.unsubcrible();
     }
 
     @Override
@@ -108,7 +123,6 @@ public class ItHomeFragment extends BaseFragment implements OnRefreshListener, O
         mItHomePresenter.getNewItHomeNews();
     }
 
-    @Override
     public void onLoadMore() {
         mItHomePresenter.getMoreItHomeNews(currentNewsId);
     }
@@ -123,15 +137,15 @@ public class ItHomeFragment extends BaseFragment implements OnRefreshListener, O
     public void hidProgressDialog() {
         if (progressBar != null)
             progressBar.setVisibility(View.INVISIBLE);
-        if (swipeToLoadLayout != null) {//不加可能会崩溃
-            swipeToLoadLayout.setRefreshing(false);
-            swipeToLoadLayout.setLoadingMore(false);
+        if (swipeRefreshLayout != null) {//不加可能会崩溃
+            swipeRefreshLayout.setRefreshing(false);
+            loading = false;
         }
     }
 
     @Override
     public void showError(String error) {
-        Snackbar.make(swipeToLoadLayout, getString(R.string.common_loading_error) + error, Snackbar.LENGTH_SHORT).setAction(getString(R.string.comon_retry), new View.OnClickListener() {
+        Snackbar.make(swipeRefreshLayout, getString(R.string.common_loading_error) + error, Snackbar.LENGTH_SHORT).setAction(getString(R.string.comon_retry), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (currentNewsId.equals("0")) {

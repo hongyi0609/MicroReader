@@ -3,6 +3,7 @@ package name.caiyao.microreader.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,10 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
-import com.aspsine.swipetoloadlayout.OnRefreshListener;
-import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 
 import java.util.ArrayList;
 
@@ -29,14 +26,17 @@ import name.caiyao.microreader.ui.iView.IVideoFragment;
 import name.caiyao.microreader.utils.NetWorkUtil;
 import name.caiyao.microreader.utils.SharePreferenceUtil;
 
-public class VideoFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener, IVideoFragment {
+public class VideoFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, IVideoFragment {
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.swipe_target)
     RecyclerView swipeTarget;
     @BindView(R.id.swipeToLoadLayout)
-    SwipeToLoadLayout swipeToLoadLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayoutManager mLinearLayoutManager;
+    private boolean loading = false;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
 
     private Unbinder mUnbinder;
 
@@ -68,10 +68,29 @@ public class VideoFragment extends BaseFragment implements OnRefreshListener, On
     }
 
     private void initView() {
-        swipeToLoadLayout.setOnRefreshListener(this);
-        swipeToLoadLayout.setOnLoadMoreListener(this);
-        swipeTarget.setLayoutManager(new LinearLayoutManager(getActivity()));
+        swipeRefreshLayout.setOnRefreshListener(this);
+        setSwipeRefreshLayoutColor(swipeRefreshLayout);
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        swipeTarget.setLayoutManager(mLinearLayoutManager);
         swipeTarget.setHasFixedSize(true);
+        swipeTarget.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) //向下滚动
+                {
+                    visibleItemCount = mLinearLayoutManager.getChildCount();
+                    totalItemCount = mLinearLayoutManager.getItemCount();
+                    pastVisiblesItems = mLinearLayoutManager.findFirstVisibleItemPosition();
+
+                    if (!loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = true;
+                            onLoadMore();
+                        }
+                    }
+                }
+            }
+        });
         videoAdapter = new VideoAdapter(getActivity(), mWeiboVideoBlogs);
         swipeTarget.setAdapter(videoAdapter);
         mIVideoPresenter.getVideoFromCache(1);
@@ -87,15 +106,10 @@ public class VideoFragment extends BaseFragment implements OnRefreshListener, On
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        mIVideoPresenter.unsubcrible();
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+        mIVideoPresenter.unsubcrible();
     }
 
     @Override
@@ -106,7 +120,6 @@ public class VideoFragment extends BaseFragment implements OnRefreshListener, On
         mIVideoPresenter.getVideo(currentPage);
     }
 
-    @Override
     public void onLoadMore() {
         mIVideoPresenter.getVideo(currentPage);
     }
@@ -119,9 +132,9 @@ public class VideoFragment extends BaseFragment implements OnRefreshListener, On
 
     @Override
     public void hidProgressDialog() {
-        if (swipeToLoadLayout != null) {//不加可能会崩溃
-            swipeToLoadLayout.setRefreshing(false);
-            swipeToLoadLayout.setLoadingMore(false);
+        if (swipeRefreshLayout != null) {//不加可能会崩溃
+            swipeRefreshLayout.setRefreshing(false);
+            loading = false;
         }
         if (progressBar != null)
             progressBar.setVisibility(View.INVISIBLE);

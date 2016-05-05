@@ -3,16 +3,13 @@ package name.caiyao.microreader.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
-import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
-import com.aspsine.swipetoloadlayout.OnRefreshListener;
-import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 
 import java.util.ArrayList;
 
@@ -30,12 +27,12 @@ import name.caiyao.microreader.utils.NetWorkUtil;
 import name.caiyao.microreader.utils.SharePreferenceUtil;
 
 
-public class ZhihuFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener, IZhihuFragment {
+public class ZhihuFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, IZhihuFragment {
 
     @BindView(R.id.swipe_target)
     RecyclerView swipeTarget;
     @BindView(R.id.swipeToLoadLayout)
-    SwipeToLoadLayout swipeToLoadLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
@@ -45,6 +42,9 @@ public class ZhihuFragment extends BaseFragment implements OnRefreshListener, On
     private ZhihuAdapter zhihuAdapter;
     private IZhihuPresenter mZhihuPresenter;
     private ArrayList<ZhihuDailyItem> zhihuStories = new ArrayList<>();
+    private LinearLayoutManager mLinearLayoutManager;
+    private boolean loading = false;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
 
     public ZhihuFragment() {
     }
@@ -69,12 +69,31 @@ public class ZhihuFragment extends BaseFragment implements OnRefreshListener, On
     }
 
     private void initView() {
-        swipeToLoadLayout.setOnRefreshListener(this);
-        swipeToLoadLayout.setOnLoadMoreListener(this);
-        swipeTarget.setLayoutManager(new LinearLayoutManager(getActivity()));
+        swipeRefreshLayout.setOnRefreshListener(this);
+        setSwipeRefreshLayoutColor(swipeRefreshLayout);
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        swipeTarget.setLayoutManager(mLinearLayoutManager);
         swipeTarget.setHasFixedSize(true);
         zhihuAdapter = new ZhihuAdapter(getActivity(), zhihuStories);
         swipeTarget.setAdapter(zhihuAdapter);
+        swipeTarget.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) //向下滚动
+                {
+                    visibleItemCount = mLinearLayoutManager.getChildCount();
+                    totalItemCount = mLinearLayoutManager.getItemCount();
+                    pastVisiblesItems = mLinearLayoutManager.findFirstVisibleItemPosition();
+
+                    if (!loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = true;
+                            onLoadMore();
+                        }
+                    }
+                }
+            }
+        });
         mZhihuPresenter.getLastFromCache();
         if (SharePreferenceUtil.isRefreshOnlyWifi(getActivity())) {
             if (NetWorkUtil.isWifiConnected(getActivity())) {
@@ -86,15 +105,10 @@ public class ZhihuFragment extends BaseFragment implements OnRefreshListener, On
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        mZhihuPresenter.unsubcrible();
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+        mZhihuPresenter.unsubcrible();
     }
 
     @Override
@@ -105,7 +119,6 @@ public class ZhihuFragment extends BaseFragment implements OnRefreshListener, On
         mZhihuPresenter.getLastZhihuNews();
     }
 
-    @Override
     public void onLoadMore() {
         mZhihuPresenter.getTheDaily(currentLoadedDate);
     }
@@ -120,9 +133,9 @@ public class ZhihuFragment extends BaseFragment implements OnRefreshListener, On
     public void hidProgressDialog() {
         if (progressBar != null)
             progressBar.setVisibility(View.INVISIBLE);
-        if (swipeToLoadLayout != null) {
-            swipeToLoadLayout.setRefreshing(false);
-            swipeToLoadLayout.setLoadingMore(false);
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(false);
+            loading = false;
         }
     }
 

@@ -3,6 +3,7 @@ package name.caiyao.microreader.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,10 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
-import com.aspsine.swipetoloadlayout.OnRefreshListener;
-import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 
 import java.util.ArrayList;
 
@@ -29,23 +26,24 @@ import name.caiyao.microreader.ui.iView.IWeixinFragment;
 import name.caiyao.microreader.utils.NetWorkUtil;
 import name.caiyao.microreader.utils.SharePreferenceUtil;
 
-public class WeixinFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener, IWeixinFragment {
+public class WeixinFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, IWeixinFragment {
 
 
     WeixinAdapter weixinAdapter;
     @BindView(R.id.swipe_target)
     RecyclerView swipeTarget;
     @BindView(R.id.swipeToLoadLayout)
-    SwipeToLoadLayout swipeToLoadLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
     private Unbinder mUnbinder;
-
     private IWeixinPresenter mWeixinPresenter;
-
     private ArrayList<WeixinNews> weixinNewses = new ArrayList<>();
-
     private int currentPage = 1;
+    private LinearLayoutManager mLinearLayoutManager;
+    private boolean loading = false;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
 
     public WeixinFragment() {
     }
@@ -65,18 +63,31 @@ public class WeixinFragment extends BaseFragment implements OnRefreshListener, O
         initView();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mWeixinPresenter.unsubcrible();
-    }
-
     private void initView() {
         showProgressDialog();
-        swipeToLoadLayout.setOnRefreshListener(this);
-        swipeToLoadLayout.setOnLoadMoreListener(this);
-        swipeTarget.setLayoutManager(new LinearLayoutManager(getActivity()));
+        swipeRefreshLayout.setOnRefreshListener(this);
+        setSwipeRefreshLayoutColor(swipeRefreshLayout);
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        swipeTarget.setLayoutManager(mLinearLayoutManager);
         swipeTarget.setHasFixedSize(true);
+        swipeTarget.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) //向下滚动
+                {
+                    visibleItemCount = mLinearLayoutManager.getChildCount();
+                    totalItemCount = mLinearLayoutManager.getItemCount();
+                    pastVisiblesItems = mLinearLayoutManager.findFirstVisibleItemPosition();
+
+                    if (!loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = true;
+                            onLoadMore();
+                        }
+                    }
+                }
+            }
+        });
         weixinAdapter = new WeixinAdapter(getActivity(),weixinNewses);
         swipeTarget.setAdapter(weixinAdapter);
         mWeixinPresenter.getWeixinNews(1);
@@ -104,7 +115,6 @@ public class WeixinFragment extends BaseFragment implements OnRefreshListener, O
         mWeixinPresenter.getWeixinNews(currentPage);
     }
 
-    @Override
     public void onLoadMore() {
         mWeixinPresenter.getWeixinNews(currentPage);
     }
@@ -119,13 +129,14 @@ public class WeixinFragment extends BaseFragment implements OnRefreshListener, O
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+        mWeixinPresenter.unsubcrible();
     }
 
     @Override
     public void hidProgressDialog() {
-        if (swipeToLoadLayout != null) {//不加可能会崩溃
-            swipeToLoadLayout.setRefreshing(false);
-            swipeToLoadLayout.setLoadingMore(false);
+        if (swipeRefreshLayout != null) {//不加可能会崩溃
+            swipeRefreshLayout.setRefreshing(false);
+            loading = false;
         }
         if (progressBar != null)
             progressBar.setVisibility(View.INVISIBLE);

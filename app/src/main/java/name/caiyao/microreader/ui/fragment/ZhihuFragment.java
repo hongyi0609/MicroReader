@@ -160,5 +160,9 @@ public class ZhihuFragment extends BaseFragment implements SwipeRefreshLayout.On
         currentLoadedDate = zhihuDaily.getDate();
         zhihuStories.addAll(zhihuDaily.getStories());
         zhihuAdapter.notifyDataSetChanged();
+        //若未填满屏幕
+        if (!swipeTarget.canScrollVertically(View.SCROLL_INDICATOR_BOTTOM)){
+            onLoadMore();
+        }
     }
 }

@@ -6,17 +6,17 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 
 import com.bugtags.library.Bugtags;
+import com.example.swipebackactivity.app.SwipeBackActivity;
 import com.jaeger.library.StatusBarUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import name.caiyao.microreader.utils.SharePreferenceUtil;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends SwipeBackActivity {
 
     @Override
     protected void onResume() {

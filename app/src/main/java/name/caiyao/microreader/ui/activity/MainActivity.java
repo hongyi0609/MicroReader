@@ -90,6 +90,8 @@ public class MainActivity extends BaseActivity
                 new int[]{android.R.attr.state_checked}  // pressed
         };
 
+        getSwipeBackLayout().setEnableGesture(false);
+
         int[] color = new int[]{
                 Color.BLACK,
                 getSharedPreferences(SharePreferenceUtil.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE).getInt(SharePreferenceUtil.MUTED, ContextCompat.getColor(this, R.color.colorAccent))

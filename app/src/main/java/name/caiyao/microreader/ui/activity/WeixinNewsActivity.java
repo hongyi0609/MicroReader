@@ -18,11 +18,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-
-import com.hannesdorfmann.swipeback.Position;
-import com.hannesdorfmann.swipeback.SwipeBack;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -51,9 +47,7 @@ public class WeixinNewsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SwipeBack.attach(this, Position.LEFT)
-                .setContentView(R.layout.activity_weixin_news)
-                .setSwipeBackView(R.layout.swipe_back);
+        setContentView(R.layout.activity_weixin_news);
         ButterKnife.bind(this);
 
         url = getIntent().getStringExtra("url");
@@ -80,12 +74,7 @@ public class WeixinNewsActivity extends BaseActivity {
             }
         });
 
-        int vibrantColor = setToolBar(fabButton, toolbar, true, true, null);
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.swipe_back);
-        if (linearLayout != null) {
-            linearLayout.setBackgroundColor(vibrantColor);
-        }
-
+        setToolBar(fabButton, toolbar, true, true, null);
         overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
 
         WebSettings webSettings = wvWeixin.getSettings();

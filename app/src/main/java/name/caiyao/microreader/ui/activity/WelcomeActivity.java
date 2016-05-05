@@ -36,6 +36,8 @@ public class WelcomeActivity extends BaseActivity implements IWelcome {
 
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
+        getSwipeBackLayout().setEnableGesture(false);
+
         DateFormat dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.DATE_FIELD);
         String date = dateFormat.format(new Date());
 

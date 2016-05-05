@@ -5,10 +5,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-
-import com.hannesdorfmann.swipeback.Position;
-import com.hannesdorfmann.swipeback.SwipeBack;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,9 +29,7 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SwipeBack.attach(this, Position.LEFT)
-                .setContentView(R.layout.activity_settings)
-                .setSwipeBackView(R.layout.swipe_back);
+        setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
         toolbar.setTitle(R.string.activity_setting_title);
         setSupportActionBar(toolbar);
@@ -56,11 +50,7 @@ public class SettingsActivity extends BaseActivity {
                        recreate();
                     }
                 });
-        int vibrantColor = setToolBar(null,toolbar, true, true, null);
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.swipe_back);
-        if (linearLayout != null) {
-            linearLayout.setBackgroundColor(vibrantColor);
-        }
+        setToolBar(null,toolbar, true, true, null);
         getFragmentManager().beginTransaction().replace(R.id.fl_preference, settingsFragment).commit();
     }
 

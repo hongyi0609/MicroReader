@@ -9,9 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import com.hannesdorfmann.swipeback.Position;
-import com.hannesdorfmann.swipeback.SwipeBack;
-
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -44,9 +41,7 @@ public class ChangeChannelActivity extends BaseActivity implements IChangeChanne
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SwipeBack.attach(this, Position.LEFT)
-                .setContentView(R.layout.activity_change_channel)
-                .setSwipeBackView(R.layout.swipe_back);
+        setContentView(R.layout.activity_change_channel);
         ButterKnife.bind(this);
         initData();
         initView();

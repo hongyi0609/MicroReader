@@ -7,7 +7,7 @@
 2. RxJava 的使用，包括配合 Retrofit、RxBus 的使用等；
 3. MVP 架构实践，包括 presenter 的生命周期管理；
 4. RecycleView + CardView 的使用；
-5. RecycleView 使用 ItemTouchHelper 实现拖拽移动到不同的列表；
+5. RecycleView 使用 ItemTouchHelper 实现拖拽移动到不同的列表，下拉刷新，上拉到底自动加载等；
 6. 使用 Palette 从图片中取色；
 7. 主题动态切换；
 8. Android 4.4 及以上版本的状态栏适配；

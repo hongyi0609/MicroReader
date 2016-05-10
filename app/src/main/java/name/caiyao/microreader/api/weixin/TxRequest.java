@@ -43,7 +43,8 @@ public class TxRequest {
     static int cacheSize = 10 * 1024 * 1024; // 10 MiB
     static Cache cache = new Cache(httpCacheDirectory, cacheSize);
     static OkHttpClient client = new OkHttpClient.Builder()
-            . addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+            .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+            .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
             .cache(cache)
             .build();
 

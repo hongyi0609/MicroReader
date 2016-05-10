@@ -1,5 +1,7 @@
 package name.caiyao.microreader.api.itHome;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -28,6 +30,7 @@ public class ItHomeRequest {
                         .build();
             } else {
                 int maxStale = 60 * 60 * 24 * 28; // 离线时缓存保存4周
+                Log.i("TAG","离线缓存");
                 return originalResponse.newBuilder()
                         .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
                         .build();
@@ -41,6 +44,7 @@ public class ItHomeRequest {
     static Cache cache = new Cache(httpCacheDirectory, cacheSize);
     static OkHttpClient client = new OkHttpClient.Builder()
             .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+            .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
             .cache(cache)
             .build();
 

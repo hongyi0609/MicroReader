@@ -41,6 +41,7 @@ public class VideoRequest {
     static Cache cache = new Cache(httpCacheDirectory, cacheSize);
     static OkHttpClient client = new OkHttpClient.Builder()
             .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+            .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
             .cache(cache)
             .build();
 

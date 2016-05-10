@@ -3,6 +3,7 @@ package name.caiyao.microreader.ui.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -19,8 +20,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.transition.Slide;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -28,15 +31,22 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import name.caiyao.microreader.BuildConfig;
 import name.caiyao.microreader.R;
 import name.caiyao.microreader.bean.UpdateItem;
+import name.caiyao.microreader.config.Config;
 import name.caiyao.microreader.event.StatusBarEvent;
 import name.caiyao.microreader.presenter.IMainPresenter;
 import name.caiyao.microreader.presenter.impl.MainPresenterImpl;
+import name.caiyao.microreader.ui.fragment.GuokrFragment;
+import name.caiyao.microreader.ui.fragment.ItHomeFragment;
+import name.caiyao.microreader.ui.fragment.VideoFragment;
+import name.caiyao.microreader.ui.fragment.WeixinFragment;
+import name.caiyao.microreader.ui.fragment.ZhihuFragment;
 import name.caiyao.microreader.ui.iView.IMain;
 import name.caiyao.microreader.utils.RxBus;
 import name.caiyao.microreader.utils.SharePreferenceUtil;
@@ -60,6 +70,7 @@ public class MainActivity extends BaseActivity
     private ArrayList<Integer> mTitles;
     private IMainPresenter IMainPresenter;
     public Subscription rxSubscription;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +78,10 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        mSharedPreferences = getSharedPreferences(SharePreferenceUtil.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+
         setSupportActionBar(toolbar);
-        IMainPresenter = new MainPresenterImpl(this, this);
+        IMainPresenter = new MainPresenterImpl(this);
 
         boolean isKitKat = Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT;
         if (isKitKat)
@@ -107,7 +120,7 @@ public class MainActivity extends BaseActivity
             llImage.setBackground(bitmapDrawable);
             imageDescription.setText(getSharedPreferences(SharePreferenceUtil.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE).getString(SharePreferenceUtil.IMAGE_DESCRIPTION, "我的愿望，就是希望你的愿望里，也有我"));
         }
-        IMainPresenter.initMenu(navView);
+        initMenu();
         IMainPresenter.checkUpdate();
 
         rxSubscription = RxBus.getDefault().toObservable(StatusBarEvent.class)
@@ -178,11 +191,52 @@ public class MainActivity extends BaseActivity
         IMainPresenter.unsubcrible();
     }
 
-    @Override
-    public void initMenu(ArrayList<Fragment> fragments, ArrayList<Integer> titles) {
-        mFragments = fragments;
-        mTitles = titles;
-        switchFragment(mFragments.get(0), getString(titles.get(0)));
+    public void initMenu() {
+        ArrayList<Config.Channel> savedChannelList = new ArrayList<>();
+        mTitles = new ArrayList<>();
+        mFragments = new ArrayList<>();
+        Menu menu = navView.getMenu();
+        menu.clear();
+        String savedChannel = mSharedPreferences.getString(SharePreferenceUtil.SAVED_CHANNEL, null);
+        if (TextUtils.isEmpty(savedChannel)) {
+            Collections.addAll(savedChannelList, Config.Channel.values());
+        } else {
+            for (String s : savedChannel.split(",")) {
+                savedChannelList.add(Config.Channel.valueOf(s));
+            }
+        }
+        for (int i = 0; i < savedChannelList.size(); i++) {
+            MenuItem menuItem = menu.add(0, i, 0, savedChannelList.get(i).getTitle());
+            mTitles.add(savedChannelList.get(i).getTitle());
+            menuItem.setIcon(savedChannelList.get(i).getIcon());
+            menuItem.setCheckable(true);
+            addFragment(savedChannelList.get(i).name());
+            if (i == 0) {
+                menuItem.setChecked(true);
+            }
+        }
+        navView.inflateMenu(R.menu.activity_main_drawer);
+        switchFragment(mFragments.get(0), getString(mTitles.get(0)));
+    }
+
+    private void addFragment(String name) {
+        switch (name) {
+            case "GUOKR":
+                mFragments.add(new GuokrFragment());
+                break;
+            case "WEIXIN":
+                mFragments.add(new WeixinFragment());
+                break;
+            case "ZHIHU":
+                mFragments.add(new ZhihuFragment());
+                break;
+            case "VIDEO":
+                mFragments.add(new VideoFragment());
+                break;
+            case "IT":
+                mFragments.add(new ItHomeFragment());
+                break;
+        }
     }
 
     @Override

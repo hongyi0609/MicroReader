@@ -25,6 +25,9 @@
 1. WebView加载微信网页时部分图片无法显示，部分手机播放视频白屏；
 2. 本项目为个人练习作品，还有很多不完善的地方，请多多指教。
 
+#### 感谢
+1. 感谢@AndroidJiang[6] 提出的Retrofit离线缓存的问题，已修复
+
 #### 声明
 本项目所使用除果壳外API均为破解所得，原作公司拥有所有权利。本程序仅供测试学习，用于其他用途所造成的纠纷与本人无关。
 
@@ -33,3 +36,4 @@
 [3]: /screenshot/Screenshot_20160503-085902.png
 [4]: /screenshot/Screenshot_20160503-085945.png
 [5]: http://caiyao.name/releases/microreader_1.2.0.apk
+[6]: https://github.com/AndroidJiang

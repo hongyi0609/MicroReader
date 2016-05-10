@@ -136,6 +136,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                     @Override
                     public void onError(Throwable e) {
                         if (progressDialog.isShowing()) {
+                            e.printStackTrace();
                             progressDialog.dismiss();
                             Toast.makeText(mContext, "视频解析失败！", Toast.LENGTH_SHORT).show();
                             mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(weiboVideoBlog.getBlog().getPageInfo().getVideoUrl())));
@@ -149,7 +150,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                             progressDialog.dismiss();
                             try {
                                 String shareUrl;
-                                Pattern pattern = Pattern.compile("href\\s*=\\s*(?:\"([^\"]*)\"|'([^']*)'|([^\"'>\\s]+)).*target=\"blank\">http");
+                                Pattern pattern = Pattern.compile(".*?target=\"_blank\">(.*?)</a>.*?");
                                 final Matcher matcher = pattern.matcher(responseBody.string());
                                 shareUrl = weiboVideoBlog.getBlog().getPageInfo().getVideoUrl();
                                 if (TextUtils.isEmpty(shareUrl)) {

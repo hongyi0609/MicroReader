@@ -93,6 +93,7 @@ public class ZhihuPresenterImpl extends BasePresenterImpl implements IZhihuPrese
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         mZhihuFragment.hidProgressDialog();
                         mZhihuFragment.showError(e.getMessage());
                     }

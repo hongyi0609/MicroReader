@@ -79,11 +79,9 @@ public class ItHomeFragment extends BaseFragment implements SwipeRefreshLayout.O
                     totalItemCount = mLinearLayoutManager.getItemCount();
                     pastVisiblesItems = mLinearLayoutManager.findFirstVisibleItemPosition();
 
-                    if (!loading) {
-                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                            loading = true;
-                            onLoadMore();
-                        }
+                    if (!loading && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                        loading = true;
+                        onLoadMore();
                     }
                 }
             }

@@ -28,9 +28,8 @@ public class DBUtils {
 
     public void insertHasRead(String table, String key, int value) {
         Cursor cursor = mSQLiteDatabase.query(table, null, null, null, null, null, "id asc");
-        if (cursor.getCount() > 200) {
-            if (cursor.moveToNext())
-                mSQLiteDatabase.delete(table, "id=?", new String[]{String.valueOf(cursor.getInt(cursor.getColumnIndex("id")))});
+        if (cursor.getCount() > 200 && cursor.moveToNext()) {
+            mSQLiteDatabase.delete(table, "id=?", new String[]{String.valueOf(cursor.getInt(cursor.getColumnIndex("id")))});
         }
         cursor.close();
         ContentValues contentValues = new ContentValues();

@@ -17,6 +17,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by YiuChoi on 2016/4/12 0012.
  */
 public class VideoRequest {
+
+    private VideoRequest() {}
+
     private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {

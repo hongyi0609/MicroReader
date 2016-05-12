@@ -19,6 +19,9 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
  * Created by 蔡小木 on 2016/3/24 0024.
  */
 public class ItHomeRequest {
+
+    private ItHomeRequest() {}
+
     private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {

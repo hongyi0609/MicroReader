@@ -17,6 +17,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by 蔡小木 on 2016/3/7 0007.
  */
 public class GuokrRequest {
+
+    private GuokrRequest() {}
+
     protected static final Object monitor = new Object();
     private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override

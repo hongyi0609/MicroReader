@@ -7,6 +7,9 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
  * Created by 蔡小木 on 2016/3/9 0009.
  */
 public class UtilRequest {
+
+    private UtilRequest() {}
+
     private static UtilApi utilApi = null;
     protected static final Object monitor = new Object();
 

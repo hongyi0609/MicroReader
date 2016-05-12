@@ -12,7 +12,7 @@ import com.umeng.analytics.MobclickAgent;
  */
 public class MicroApplication extends Application {
 
-    public static MicroApplication microApplication;
+    public static final MicroApplication microApplication;
 
     @Override
     public void onCreate() {

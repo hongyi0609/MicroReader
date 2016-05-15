@@ -9,6 +9,8 @@ import android.net.NetworkInfo;
  */
 public class NetWorkUtil {
 
+    private NetWorkUtil() {}
+
     /**
      * 判断网络是否可用
      *

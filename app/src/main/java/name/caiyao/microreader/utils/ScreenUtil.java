@@ -9,6 +9,8 @@ import android.view.WindowManager;
  */
 public class ScreenUtil {
 
+    private ScreenUtil() {}
+
     public static int getScreenHight(Context context) {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);

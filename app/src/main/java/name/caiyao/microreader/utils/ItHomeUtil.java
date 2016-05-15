@@ -14,6 +14,8 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class ItHomeUtil {
 
+    private ItHomeUtil() {}
+
     public static String getMinNewsId(String id) {
         byte[] bytes = new byte[]{-86, -7, -69, -102, -83, -124, -87, -14};
         int i = 0;

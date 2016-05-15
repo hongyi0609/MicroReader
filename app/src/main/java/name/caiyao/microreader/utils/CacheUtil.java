@@ -58,15 +58,15 @@ public class CacheUtil {
         return get(cacheDir, MAX_SIZE, MAX_COUNT);
     }
 
-    public static CacheUtil get(Context ctx, long max_zise, int max_count) {
+    public static CacheUtil get(Context ctx, long maxSise, int maxCount) {
         File f = new File(ctx.getCacheDir(), "ACache");
-        return get(f, max_zise, max_count);
+        return get(f, maxSise, maxCount);
     }
 
-    public static CacheUtil get(File cacheDir, long max_zise, int max_count) {
+    public static CacheUtil get(File cacheDir, long maxZise, int maxCount) {
         CacheUtil manager = mInstanceMap.get(cacheDir.getAbsoluteFile() + myPid());
         if (manager == null) {
-            manager = new CacheUtil(cacheDir, max_zise, max_count);
+            manager = new CacheUtil(cacheDir, maxZise, maxCount);
             mInstanceMap.put(cacheDir.getAbsolutePath() + myPid(), manager);
         }
         return manager;
@@ -144,11 +144,11 @@ public class CacheUtil {
         return "_" + android.os.Process.myPid();
     }
 
-    private CacheUtil(File cacheDir, long max_size, int max_count) {
+    private CacheUtil(File cacheDir, long maxSize, int maxCount) {
         if (!cacheDir.exists() && !cacheDir.mkdirs()) {
             throw new RuntimeException("can't make dirs in " + cacheDir.getAbsolutePath());
         }
-        mCache = new ACacheManager(cacheDir, max_size, max_count);
+        mCache = new ACacheManager(cacheDir, maxSize, maxCount);
     }
 
     /**
@@ -290,9 +290,9 @@ public class CacheUtil {
      * @return JSONObject数据
      */
     public JSONObject getAsJSONObject(String key) {
-        String JSONString = getAsString(key);
+        String jsonString = getAsString(key);
         try {
-            JSONObject obj = new JSONObject(JSONString);
+            JSONObject obj = new JSONObject(jsonString);
             return obj;
         } catch (Exception e) {
             return null;
@@ -331,9 +331,9 @@ public class CacheUtil {
      * @return JSONArray数据
      */
     public JSONArray getAsJSONArray(String key) {
-        String JSONString = getAsString(key);
+        String jsonstring = getAsString(key);
         try {
-            JSONArray obj = new JSONArray(JSONString);
+            JSONArray obj = new JSONArray(jsonstring);
             return obj;
         } catch (Exception e) {
             //e.printStackTrace();
@@ -413,15 +413,15 @@ public class CacheUtil {
      * @return byte 数据
      */
     public byte[] getAsBinary(String key) {
-        RandomAccessFile RAFile = null;
+        RandomAccessFile raFile = null;
         boolean removeFile = false;
         try {
             File file = mCache.get(key);
             if (!file.exists())
                 return null;
-            RAFile = new RandomAccessFile(file, "r");
-            byte[] byteArray = new byte[(int) RAFile.length()];
-            RAFile.read(byteArray);
+            raFile = new RandomAccessFile(file, "r");
+            byte[] byteArray = new byte[(int) raFile.length()];
+            raFile.read(byteArray);
             if (!Utils.isDue(byteArray)) {
                 return Utils.clearDateInfo(byteArray);
             } else {
@@ -432,9 +432,9 @@ public class CacheUtil {
             e.printStackTrace();
             return null;
         } finally {
-            if (RAFile != null) {
+            if (raFile != null) {
                 try {
-                    RAFile.close();
+                    raFile.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -539,7 +539,7 @@ public class CacheUtil {
      * @param value 保存的bitmap数据
      */
     public void put(String key, Bitmap value) {
-        put(key, Utils.Bitmap2Bytes(value));
+        put(key, Utils.bitmap2Bytes(value));
     }
 
     /**
@@ -550,7 +550,7 @@ public class CacheUtil {
      * @param saveTime 保存的时间，单位：秒
      */
     public void put(String key, Bitmap value, int saveTime) {
-        put(key, Utils.Bitmap2Bytes(value), saveTime);
+        put(key, Utils.bitmap2Bytes(value), saveTime);
     }
 
     /**
@@ -563,7 +563,7 @@ public class CacheUtil {
         if (getAsBinary(key) == null) {
             return null;
         }
-        return Utils.Bytes2Bimap(getAsBinary(key));
+        return Utils.bytes2Bimap(getAsBinary(key));
     }
 
     // =======================================
@@ -601,7 +601,7 @@ public class CacheUtil {
         if (getAsBinary(key) == null) {
             return null;
         }
-        return Utils.bitmap2Drawable(Utils.Bytes2Bimap(getAsBinary(key)));
+        return Utils.bitmap2Drawable(Utils.bytes2Bimap(getAsBinary(key)));
     }
 
     /**
@@ -881,7 +881,7 @@ public class CacheUtil {
         /*
          * Bitmap → byte[]
          */
-        private static byte[] Bitmap2Bytes(Bitmap bm) {
+        private static byte[] bitmap2Bytes(Bitmap bm) {
             if (bm == null) {
                 return null;
             }
@@ -893,7 +893,7 @@ public class CacheUtil {
         /*
          * byte[] → Bitmap
          */
-        private static Bitmap Bytes2Bimap(byte[] b) {
+        private static Bitmap bytes2Bimap(byte[] b) {
             if (b.length == 0) {
                 return null;
             }

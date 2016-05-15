@@ -16,7 +16,7 @@ public class WebUtil {
     private static final String DIV_IMAGE_PLACE_HOLDER = "class=\"img-place-holder\"";
     private static final String DIV_IMAGE_PLACE_HOLDER_IGNORED = "class=\"img-place-holder-ignored\"";
 
-    public static String BuildHtmlWithCss(String html, String[] cssUrls, boolean isNightMode) {
+    public static String buildHtmlWithCss(String html, String[] cssUrls, boolean isNightMode) {
         StringBuilder result = new StringBuilder();
         for (String cssUrl : cssUrls) {
             result.append(String.format(CSS_LINK_PATTERN, cssUrl));

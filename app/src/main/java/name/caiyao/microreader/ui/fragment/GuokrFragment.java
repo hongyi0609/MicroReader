@@ -82,11 +82,9 @@ public class GuokrFragment extends BaseFragment implements SwipeRefreshLayout.On
                     totalItemCount = mLinearLayoutManager.getItemCount();
                     pastVisiblesItems = mLinearLayoutManager.findFirstVisibleItemPosition();
 
-                    if (!loading) {
-                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                            loading = true;
-                            onLoadMore();
-                        }
+                    if (!loading && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                        loading = true;
+                        onLoadMore();
                     }
                 }
             }

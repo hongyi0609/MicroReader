@@ -107,6 +107,14 @@ public class ViewDragHelper {
 
     private static final int MAX_SETTLE_DURATION = 600; // ms
 
+    private static final int DEF_VIEW_HORIZONTAL_DRAG_RANGE = 0;
+
+    private static final int DEF_VIEW_VERTICAL_DRAG_RANGE = 0;
+
+    private static final int DEF_VIEW_HORIZONTAL_POSITION = 0;
+
+    private static final int DEF_VIEW_VERTICAL_POSITION = 0;
+
     // Current drag state; idle, dragging or settling
     private int mDragState;
 
@@ -289,7 +297,7 @@ public class ViewDragHelper {
          * @return range of horizontal motion in pixels
          */
         public int getViewHorizontalDragRange(View child) {
-            return 0;
+            return DEF_VIEW_HORIZONTAL_DRAG_RANGE;
         }
 
         /**
@@ -301,7 +309,7 @@ public class ViewDragHelper {
          * @return range of vertical motion in pixels
          */
         public int getViewVerticalDragRange(View child) {
-            return 0;
+            return DEF_VIEW_VERTICAL_DRAG_RANGE;
         }
 
         /**
@@ -338,7 +346,7 @@ public class ViewDragHelper {
          * @return The new clamped position for left
          */
         public int clampViewPositionHorizontal(View child, int left, int dx) {
-            return 0;
+            return DEF_VIEW_HORIZONTAL_POSITION;
         }
 
         /**
@@ -353,7 +361,7 @@ public class ViewDragHelper {
          * @return The new clamped position for top
          */
         public int clampViewPositionVertical(View child, int top, int dy) {
-            return 0;
+            return DEF_VIEW_VERTICAL_POSITION;
         }
     }
 

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@android:color/background_light"
     tools:context="name.caiyao.microreader.ui.activity.WelcomeActivity">
 
     <ImageView
@@ -24,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="100dp"
         android:text="@string/description"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/darker_gray"
         android:textSize="20sp"
         android:textStyle="italic" />
 

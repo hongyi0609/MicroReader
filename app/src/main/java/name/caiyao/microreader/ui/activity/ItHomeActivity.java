@@ -186,7 +186,7 @@ public class ItHomeActivity extends BaseActivity implements IItHomeArticle {
         if (TextUtils.isEmpty(itHomeArticle.getDetail())) {
             wvIt.loadUrl(itHomeItem.getUrl());
         } else {
-            String data = WebUtil.BuildHtmlWithCss(itHomeArticle.getDetail(), new String[]{"news.css"}, false);
+            String data = WebUtil.buildHtmlWithCss(itHomeArticle.getDetail(), new String[]{"news.css"}, false);
             wvIt.loadDataWithBaseURL(WebUtil.BASE_URL, data, WebUtil.MIME_TYPE, WebUtil.ENCODING, itHomeItem.getUrl());
         }
     }

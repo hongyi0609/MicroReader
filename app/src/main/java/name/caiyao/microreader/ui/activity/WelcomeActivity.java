@@ -53,7 +53,7 @@ public class WelcomeActivity extends BaseActivity implements IWelcome {
                 mIWelcomePresenter.getBackground();
             }
         } else {
-            hasGetBackground();
+            //hasGetBackground();
         }
     }
 

@@ -204,7 +204,7 @@ public class ZhihuStoryActivity extends BaseActivity implements IZhihuStory {
         if (TextUtils.isEmpty(zhihuStory.getBody())) {
             wvZhihu.loadUrl(zhihuStory.getShareUrl());
         } else {
-            String data = WebUtil.BuildHtmlWithCss(zhihuStory.getBody(), zhihuStory.getCss(), false);
+            String data = WebUtil.buildHtmlWithCss(zhihuStory.getBody(), zhihuStory.getCss(), false);
             wvZhihu.loadDataWithBaseURL(WebUtil.BASE_URL, data, WebUtil.MIME_TYPE, WebUtil.ENCODING, WebUtil.FAIL_URL);
         }
     }
@@ -217,7 +217,7 @@ public class ZhihuStoryActivity extends BaseActivity implements IZhihuStory {
             wvZhihu.loadUrl(guokrArticle.getResult().getUrl());
         } else {
             //解决图片显示问题,视频显示问题
-            String data = WebUtil.BuildHtmlWithCss(guokrArticle.getResult().getContent().replaceAll("(style.*?\")>", "").replaceAll("width=\"(.*?)\"", "100%").replaceAll("height=\"(.*?)\"", "auto"), new String[]{"news.css"}, false);
+            String data = WebUtil.buildHtmlWithCss(guokrArticle.getResult().getContent().replaceAll("(style.*?\")>", "").replaceAll("width=\"(.*?)\"", "100%").replaceAll("height=\"(.*?)\"", "auto"), new String[]{"news.css"}, false);
             wvZhihu.loadDataWithBaseURL(WebUtil.BASE_URL, data, WebUtil.MIME_TYPE, WebUtil.ENCODING, WebUtil.FAIL_URL);
         }
     }

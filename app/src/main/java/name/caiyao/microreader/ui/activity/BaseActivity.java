@@ -14,6 +14,7 @@ import com.example.swipebackactivity.app.SwipeBackActivity;
 import com.jaeger.library.StatusBarUtil;
 import com.umeng.analytics.MobclickAgent;
 
+import name.caiyao.microreader.config.Config;
 import name.caiyao.microreader.utils.SharePreferenceUtil;
 
 public class BaseActivity extends SwipeBackActivity {
@@ -41,6 +42,9 @@ public class BaseActivity extends SwipeBackActivity {
     public int setToolBar(FloatingActionButton floatingActionButton, Toolbar toolbar, boolean isChangeToolbar, boolean isChangeStatusBar, DrawerLayout drawerLayout) {
         int vibrantColor = getSharedPreferences(SharePreferenceUtil.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE).getInt(SharePreferenceUtil.VIBRANT, 0);
         int mutedColor = getSharedPreferences(SharePreferenceUtil.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE).getInt(SharePreferenceUtil.MUTED, 0);
+        if (Config.isNight) {
+            return vibrantColor;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (SharePreferenceUtil.isChangeNavColor(this))
                 getWindow().setNavigationBarColor(vibrantColor);

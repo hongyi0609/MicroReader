@@ -19,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.transition.Slide;
@@ -71,6 +72,16 @@ public class MainActivity extends BaseActivity
     private IMainPresenter IMainPresenter;
     public Subscription rxSubscription;
     private SharedPreferences mSharedPreferences;
+
+    static {
+        if (Config.isNight){
+            AppCompatDelegate.setDefaultNightMode(
+                    AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            AppCompatDelegate.setDefaultNightMode(
+                    AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +180,11 @@ public class MainActivity extends BaseActivity
             switchFragment(mFragments.get(id), getString(mTitles.get(id)));
         }
         switch (id) {
+            case R.id.nav_night:
+                Config.isNight = !Config.isNight;
+                finish();
+                startActivity(new Intent(this,MainActivity.class));
+                break;
             case R.id.nav_setting:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;

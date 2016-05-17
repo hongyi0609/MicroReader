@@ -16,7 +16,7 @@
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/OrangeTheme">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.WelcomeActivity"
             android:label="@string/app_name"
@@ -33,18 +33,18 @@
             android:configChanges="orientation|keyboardHidden"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/OrangeTheme"/>
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ui.activity.ZhihuStoryActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/OrangeTheme"/>
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ui.activity.MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/OrangeTheme"/>
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ui.activity.VideoActivity"
             android:hardwareAccelerated="true"
@@ -54,18 +54,18 @@
             android:name=".ui.activity.SettingsActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
-            android:theme="@style/OrangeTheme"/>
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ui.activity.ItHomeActivity"
             android:configChanges="orientation|keyboardHidden"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:theme="@style/OrangeTheme"/>
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ui.activity.ChangeChannelActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
-            android:theme="@style/OrangeTheme"/>
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ui.activity.VideoWebViewActivity"
             android:hardwareAccelerated="true"

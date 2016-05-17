@@ -15,6 +15,8 @@ public class Config {
     public static final String VIDEO = "video";
     public static final String IT = "it";
 
+    public static boolean isNight = false;
+
     public enum Channel {
         WEIXIN( R.string.fragment_wexin_title, R.drawable.icon_weixin),
         GUOKR(R.string.fragment_guokr_title, R.drawable.icon_guokr),

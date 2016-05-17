@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 import name.caiyao.microreader.R;
 import name.caiyao.microreader.bean.guokr.GuokrArticle;
 import name.caiyao.microreader.bean.zhihu.ZhihuStory;
+import name.caiyao.microreader.config.Config;
 import name.caiyao.microreader.presenter.IZhihuStoryPresenter;
 import name.caiyao.microreader.presenter.impl.ZhihuStoryPresenterImpl;
 import name.caiyao.microreader.ui.iView.IZhihuStory;
@@ -204,7 +205,7 @@ public class ZhihuStoryActivity extends BaseActivity implements IZhihuStory {
         if (TextUtils.isEmpty(zhihuStory.getBody())) {
             wvZhihu.loadUrl(zhihuStory.getShareUrl());
         } else {
-            String data = WebUtil.buildHtmlWithCss(zhihuStory.getBody(), zhihuStory.getCss(), false);
+            String data = WebUtil.buildHtmlWithCss(zhihuStory.getBody(), zhihuStory.getCss(), Config.isNight);
             wvZhihu.loadDataWithBaseURL(WebUtil.BASE_URL, data, WebUtil.MIME_TYPE, WebUtil.ENCODING, WebUtil.FAIL_URL);
         }
     }

@@ -43,7 +43,7 @@ public class BaseActivity extends SwipeBackActivity {
         int vibrantColor = getSharedPreferences(SharePreferenceUtil.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE).getInt(SharePreferenceUtil.VIBRANT, 0);
         int mutedColor = getSharedPreferences(SharePreferenceUtil.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE).getInt(SharePreferenceUtil.MUTED, 0);
         if (Config.isNight) {
-            return vibrantColor;
+            vibrantColor = Color.BLACK;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (SharePreferenceUtil.isChangeNavColor(this))

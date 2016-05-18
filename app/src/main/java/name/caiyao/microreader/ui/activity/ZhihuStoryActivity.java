@@ -1,13 +1,11 @@
 package name.caiyao.microreader.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -34,7 +32,6 @@ import name.caiyao.microreader.config.Config;
 import name.caiyao.microreader.presenter.IZhihuStoryPresenter;
 import name.caiyao.microreader.presenter.impl.ZhihuStoryPresenterImpl;
 import name.caiyao.microreader.ui.iView.IZhihuStory;
-import name.caiyao.microreader.utils.SharePreferenceUtil;
 import name.caiyao.microreader.utils.WebUtil;
 
 public class ZhihuStoryActivity extends BaseActivity implements IZhihuStory {
@@ -83,7 +80,7 @@ public class ZhihuStoryActivity extends BaseActivity implements IZhihuStory {
         toolbar.setTitle(title);
         setSupportActionBar(toolbar);
         boolean isKitKat = Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT;
-        setToolBar(fabButton, toolbar, false, isKitKat, null);
+        int  vibrantColor = setToolBar(fabButton, toolbar, false, isKitKat, null);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,8 +110,8 @@ public class ZhihuStoryActivity extends BaseActivity implements IZhihuStory {
         settings.setAppCacheEnabled(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         wvZhihu.setWebChromeClient(new WebChromeClient());
-        ctl.setContentScrimColor(getSharedPreferences(SharePreferenceUtil.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE).getInt(SharePreferenceUtil.VIBRANT, ContextCompat.getColor(this, R.color.colorPrimary)));
-        ctl.setStatusBarScrimColor(getSharedPreferences(SharePreferenceUtil.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE).getInt(SharePreferenceUtil.VIBRANT, ContextCompat.getColor(this, R.color.colorPrimary)));
+        ctl.setContentScrimColor(vibrantColor);
+        ctl.setStatusBarScrimColor(vibrantColor);
     }
 
     private void getData() {

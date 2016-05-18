@@ -1,6 +1,7 @@
 package name.caiyao.microreader.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +26,7 @@ import butterknife.ButterKnife;
 import name.caiyao.microreader.R;
 import name.caiyao.microreader.bean.itHome.ItHomeArticle;
 import name.caiyao.microreader.bean.itHome.ItHomeItem;
+import name.caiyao.microreader.config.Config;
 import name.caiyao.microreader.presenter.IItHomeArticlePresenter;
 import name.caiyao.microreader.presenter.impl.ItHomeArticlePresenterImpl;
 import name.caiyao.microreader.ui.iView.IItHomeArticle;
@@ -188,6 +190,10 @@ public class ItHomeActivity extends BaseActivity implements IItHomeArticle {
         } else {
             String data = WebUtil.buildHtmlWithCss(itHomeArticle.getDetail(), new String[]{"news.css"}, false);
             wvIt.loadDataWithBaseURL(WebUtil.BASE_URL, data, WebUtil.MIME_TYPE, WebUtil.ENCODING, itHomeItem.getUrl());
+            if (Config.isNight){
+                wvIt.setBackgroundColor(Color.parseColor("#2b2b2b"));
+                wvIt.loadUrl("javascript:$(\"body\").addClass(\"night\")");
+            }
         }
     }
 }

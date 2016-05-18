@@ -73,19 +73,23 @@ public class MainActivity extends BaseActivity
     public Subscription rxSubscription;
     private SharedPreferences mSharedPreferences;
 
-    static {
-        if (Config.isNight){
-            AppCompatDelegate.setDefaultNightMode(
-                    AppCompatDelegate.MODE_NIGHT_YES);
-        }else{
-            AppCompatDelegate.setDefaultNightMode(
-                    AppCompatDelegate.MODE_NIGHT_NO);
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null){
+            if (Config.isNight) {
+                getDelegate().setLocalNightMode(
+                        AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                getDelegate().setLocalNightMode(
+                        AppCompatDelegate.MODE_NIGHT_NO);
+            }
+            // 调用 recreate() 使设置生效
+            recreate();
+        }
+
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -105,6 +109,10 @@ public class MainActivity extends BaseActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        View headerLayout = navView.getHeaderView(0);
+        LinearLayout llImage = (LinearLayout) headerLayout.findViewById(R.id.side_image);
+        TextView imageDescription = (TextView) headerLayout.findViewById(R.id.image_description);
+
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         assert navView != null;
@@ -120,12 +128,16 @@ public class MainActivity extends BaseActivity
                 Color.BLACK,
                 getSharedPreferences(SharePreferenceUtil.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE).getInt(SharePreferenceUtil.MUTED, ContextCompat.getColor(this, R.color.colorAccent))
         };
+        if (Config.isNight){
+            llImage.setAlpha(0.2f);
+            color = new int[]{
+                    Color.DKGRAY,
+                    getSharedPreferences(SharePreferenceUtil.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE).getInt(SharePreferenceUtil.MUTED, ContextCompat.getColor(this, R.color.colorAccent))
+            };
+        }
         navView.setItemTextColor(new ColorStateList(state, color));
         navView.setItemIconTintList(new ColorStateList(state, color));
 
-        View headerLayout = navView.getHeaderView(0);
-        LinearLayout llImage = (LinearLayout) headerLayout.findViewById(R.id.side_image);
-        TextView imageDescription = (TextView) headerLayout.findViewById(R.id.image_description);
         if (new File(getFilesDir().getPath() + "/bg.jpg").exists()) {
             BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), getFilesDir().getPath() + "/bg.jpg");
             llImage.setBackground(bitmapDrawable);
@@ -183,7 +195,7 @@ public class MainActivity extends BaseActivity
             case R.id.nav_night:
                 Config.isNight = !Config.isNight;
                 finish();
-                startActivity(new Intent(this,MainActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
                 break;
             case R.id.nav_setting:
                 startActivity(new Intent(this, SettingsActivity.class));

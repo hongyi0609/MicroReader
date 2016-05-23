@@ -13,8 +13,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -24,6 +22,7 @@ import name.caiyao.microreader.bean.guokr.GuokrHotItem;
 import name.caiyao.microreader.config.Config;
 import name.caiyao.microreader.ui.activity.ZhihuStoryActivity;
 import name.caiyao.microreader.utils.DBUtils;
+import name.caiyao.microreader.utils.ImageLoader;
 
 /**
  * Created by 蔡小木 on 2016/4/27 0027.
@@ -53,7 +52,7 @@ public class GuokrAdapter extends RecyclerView.Adapter<GuokrAdapter.GuokrViewHol
         holder.mTvTitle.setText(guokrHotItem.getTitle());
         holder.mTvDescription.setText(guokrHotItem.getSummary());
         holder.mTvTime.setText(guokrHotItem.getTime());
-        Glide.with(mContext).load(guokrHotItem.getSmallImage()).into(holder.mIvIthome);
+        ImageLoader.loadImage(mContext,guokrHotItem.getSmallImage(),holder.mIvIthome);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -15,8 +15,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -26,6 +24,7 @@ import name.caiyao.microreader.bean.zhihu.ZhihuDailyItem;
 import name.caiyao.microreader.config.Config;
 import name.caiyao.microreader.ui.activity.ZhihuStoryActivity;
 import name.caiyao.microreader.utils.DBUtils;
+import name.caiyao.microreader.utils.ImageLoader;
 import name.caiyao.microreader.utils.ScreenUtil;
 
 /**
@@ -37,7 +36,7 @@ public class ZhihuAdapter extends RecyclerView.Adapter<ZhihuAdapter.ZhihuViewHol
     private ArrayList<ZhihuDailyItem> zhihuStories;
     private Context mContext;
 
-    public ZhihuAdapter(Context context,ArrayList<ZhihuDailyItem> zhihuStories) {
+    public ZhihuAdapter(Context context, ArrayList<ZhihuDailyItem> zhihuStories) {
         this.zhihuStories = zhihuStories;
         this.mContext = context;
     }
@@ -102,7 +101,7 @@ public class ZhihuAdapter extends RecyclerView.Adapter<ZhihuAdapter.ZhihuViewHol
         });
         runEnterAnimation(holder.itemView);
         if (zhihuStories.get(position).getImages() != null)
-            Glide.with(mContext).load(zhihuDailyItem.getImages()[0]).placeholder(R.drawable.icon).into(holder.ivZhihuDaily);
+            ImageLoader.loadImage(mContext, zhihuDailyItem.getImages()[0], holder.ivZhihuDaily);
     }
 
     private void runEnterAnimation(View view) {
@@ -120,7 +119,7 @@ public class ZhihuAdapter extends RecyclerView.Adapter<ZhihuAdapter.ZhihuViewHol
         return zhihuStories.size();
     }
 
-    public class ZhihuViewHolder extends RecyclerView.ViewHolder {
+    class ZhihuViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_zhihu_daily)
         ImageView ivZhihuDaily;
@@ -133,7 +132,7 @@ public class ZhihuAdapter extends RecyclerView.Adapter<ZhihuAdapter.ZhihuViewHol
         @BindView(R.id.btn_zhihu)
         Button btnZhihu;
 
-        public ZhihuViewHolder(View itemView) {
+        ZhihuViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

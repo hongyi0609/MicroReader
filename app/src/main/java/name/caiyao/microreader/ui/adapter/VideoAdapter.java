@@ -19,8 +19,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -35,6 +33,7 @@ import name.caiyao.microreader.config.Config;
 import name.caiyao.microreader.ui.activity.VideoActivity;
 import name.caiyao.microreader.ui.activity.VideoWebViewActivity;
 import name.caiyao.microreader.utils.DBUtils;
+import name.caiyao.microreader.utils.ImageLoader;
 import name.caiyao.microreader.utils.SharePreferenceUtil;
 import okhttp3.ResponseBody;
 import rx.Observer;
@@ -68,7 +67,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             holder.tvTitle.setTextColor(Color.GRAY);
         else
             holder.tvTitle.setTextColor(Color.BLACK);
-        Glide.with(mContext).load(weiboVideoBlog.getBlog().getPageInfo().getVideoPic()).into(holder.mIvVideo);
+        ImageLoader.loadImage(mContext, weiboVideoBlog.getBlog().getPageInfo().getVideoPic(), holder.mIvVideo);
         holder.tvTitle.setText(title);
         holder.tvTime.setText(weiboVideoBlog.getBlog().getCreateTime());
         holder.btnVideo.setOnClickListener(new View.OnClickListener() {

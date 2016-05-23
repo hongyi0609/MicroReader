@@ -44,7 +44,7 @@ public class ZhihuFragment extends BaseFragment implements SwipeRefreshLayout.On
     private ArrayList<ZhihuDailyItem> zhihuStories = new ArrayList<>();
     private LinearLayoutManager mLinearLayoutManager;
     private boolean loading = false;
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private int pastVisiblesItems, visibleItemCount, totalItemCount;
 
     public ZhihuFragment() {
     }
@@ -117,7 +117,7 @@ public class ZhihuFragment extends BaseFragment implements SwipeRefreshLayout.On
         mZhihuPresenter.getLastZhihuNews();
     }
 
-    public void onLoadMore() {
+    private void onLoadMore() {
         mZhihuPresenter.getTheDaily(currentLoadedDate);
     }
 

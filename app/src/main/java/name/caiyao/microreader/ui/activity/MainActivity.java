@@ -70,14 +70,14 @@ public class MainActivity extends BaseActivity
     private ArrayList<Fragment> mFragments;
     private ArrayList<Integer> mTitles;
     private IMainPresenter IMainPresenter;
-    public Subscription rxSubscription;
+    private Subscription rxSubscription;
     private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             if (Config.isNight) {
                 getDelegate().setLocalNightMode(
                         AppCompatDelegate.MODE_NIGHT_YES);
@@ -89,9 +89,10 @@ public class MainActivity extends BaseActivity
             recreate();
         }
 
-
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         mSharedPreferences = getSharedPreferences(SharePreferenceUtil.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
 
@@ -113,8 +114,6 @@ public class MainActivity extends BaseActivity
         LinearLayout llImage = (LinearLayout) headerLayout.findViewById(R.id.side_image);
         TextView imageDescription = (TextView) headerLayout.findViewById(R.id.image_description);
 
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
         assert navView != null;
         navView.setNavigationItemSelectedListener(this);
         int[][] state = new int[][]{
@@ -128,7 +127,7 @@ public class MainActivity extends BaseActivity
                 Color.BLACK,
                 getSharedPreferences(SharePreferenceUtil.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE).getInt(SharePreferenceUtil.MUTED, ContextCompat.getColor(this, R.color.colorAccent))
         };
-        if (Config.isNight){
+        if (Config.isNight) {
             llImage.setAlpha(0.2f);
             color = new int[]{
                     Color.DKGRAY,
@@ -219,7 +218,7 @@ public class MainActivity extends BaseActivity
         IMainPresenter.unsubcrible();
     }
 
-    public void initMenu() {
+    private void initMenu() {
         ArrayList<Config.Channel> savedChannelList = new ArrayList<>();
         mTitles = new ArrayList<>();
         mFragments = new ArrayList<>();

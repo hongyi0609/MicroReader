@@ -44,4 +44,5 @@
     <string name="common_swipe_to_refresh">Swipe to refresh</string>
     <string name="common_set_read">Set as read</string>
     <string name="common_set_unread">Set as unread</string>
+    <string name="night_night">Night Mode</string>
 </resources>

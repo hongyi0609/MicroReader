@@ -17,8 +17,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -28,6 +26,7 @@ import name.caiyao.microreader.bean.weixin.WeixinNews;
 import name.caiyao.microreader.config.Config;
 import name.caiyao.microreader.ui.activity.WeixinNewsActivity;
 import name.caiyao.microreader.utils.DBUtils;
+import name.caiyao.microreader.utils.ImageLoader;
 import name.caiyao.microreader.utils.ScreenUtil;
 import name.caiyao.microreader.utils.SharePreferenceUtil;
 
@@ -61,7 +60,7 @@ public class WeixinAdapter extends RecyclerView.Adapter<WeixinAdapter.WeixinView
         holder.tvTitle.setText(weixinNews.getTitle());
         holder.tvTime.setText(weixinNews.getHottime());
         if (!TextUtils.isEmpty(weixinNews.getPicUrl())) {
-            Glide.with(mContext).load(weixinNews.getPicUrl()).placeholder(R.drawable.bg).into(holder.ivWeixin);
+            ImageLoader.loadImage(mContext, weixinNews.getPicUrl(), holder.ivWeixin);
         } else {
             holder.ivWeixin.setImageResource(R.drawable.bg);
         }
@@ -137,7 +136,7 @@ public class WeixinAdapter extends RecyclerView.Adapter<WeixinAdapter.WeixinView
         return weixinNewses.size();
     }
 
-    public class WeixinViewHolder extends RecyclerView.ViewHolder {
+    class WeixinViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_weixin)
         ImageView ivWeixin;
         @BindView(R.id.tv_title)
@@ -151,7 +150,7 @@ public class WeixinAdapter extends RecyclerView.Adapter<WeixinAdapter.WeixinView
         @BindView(R.id.btn_weixin)
         Button btnWeixin;
 
-        public WeixinViewHolder(View itemView) {
+        WeixinViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

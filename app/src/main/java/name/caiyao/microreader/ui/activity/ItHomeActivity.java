@@ -1,7 +1,6 @@
 package name.caiyao.microreader.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -188,12 +187,8 @@ public class ItHomeActivity extends BaseActivity implements IItHomeArticle {
         if (TextUtils.isEmpty(itHomeArticle.getDetail())) {
             wvIt.loadUrl(itHomeItem.getUrl());
         } else {
-            String data = WebUtil.buildHtmlWithCss(itHomeArticle.getDetail(), new String[]{"news.css"}, false);
+            String data = WebUtil.buildHtmlForIt(itHomeArticle.getDetail(), Config.isNight);
             wvIt.loadDataWithBaseURL(WebUtil.BASE_URL, data, WebUtil.MIME_TYPE, WebUtil.ENCODING, itHomeItem.getUrl());
-            if (Config.isNight){
-                wvIt.setBackgroundColor(Color.parseColor("#2b2b2b"));
-                wvIt.loadUrl("javascript:$(\"body\").addClass(\"night\")");
-            }
         }
     }
 }

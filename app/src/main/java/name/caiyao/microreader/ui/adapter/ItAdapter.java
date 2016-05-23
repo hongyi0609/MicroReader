@@ -13,8 +13,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -24,6 +22,7 @@ import name.caiyao.microreader.bean.itHome.ItHomeItem;
 import name.caiyao.microreader.config.Config;
 import name.caiyao.microreader.ui.activity.ItHomeActivity;
 import name.caiyao.microreader.utils.DBUtils;
+import name.caiyao.microreader.utils.ImageLoader;
 
 /**
  * Created by 蔡小木 on 2016/4/29 0029.
@@ -33,9 +32,9 @@ public class ItAdapter extends RecyclerView.Adapter<ItAdapter.ItViewHolder> {
     private ArrayList<ItHomeItem> itHomeItems;
     private Context mContext;
 
-    public ItAdapter(Context context,ArrayList<ItHomeItem> itHomeItems) {
+    public ItAdapter(Context context, ArrayList<ItHomeItem> itHomeItems) {
         this.itHomeItems = itHomeItems;
-        this.mContext=context;
+        this.mContext = context;
     }
 
     @Override
@@ -53,7 +52,7 @@ public class ItAdapter extends RecyclerView.Adapter<ItAdapter.ItViewHolder> {
         holder.tvTitle.setText(itHomeItem.getTitle());
         holder.tvTime.setText(itHomeItem.getPostdate());
         holder.tvDescription.setText(itHomeItem.getDescription());
-        Glide.with(mContext).load(itHomeItem.getImage()).placeholder(R.drawable.bg).into(holder.ivIthome);
+        ImageLoader.loadImage(mContext, itHomeItem.getImage(), holder.ivIthome);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

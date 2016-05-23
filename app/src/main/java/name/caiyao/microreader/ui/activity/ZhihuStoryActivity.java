@@ -19,8 +19,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-
 import java.lang.reflect.InvocationTargetException;
 
 import butterknife.BindView;
@@ -32,6 +30,7 @@ import name.caiyao.microreader.config.Config;
 import name.caiyao.microreader.presenter.IZhihuStoryPresenter;
 import name.caiyao.microreader.presenter.impl.ZhihuStoryPresenterImpl;
 import name.caiyao.microreader.ui.iView.IZhihuStory;
+import name.caiyao.microreader.utils.ImageLoader;
 import name.caiyao.microreader.utils.WebUtil;
 
 public class ZhihuStoryActivity extends BaseActivity implements IZhihuStory {
@@ -80,7 +79,7 @@ public class ZhihuStoryActivity extends BaseActivity implements IZhihuStory {
         toolbar.setTitle(title);
         setSupportActionBar(toolbar);
         boolean isKitKat = Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT;
-        int  vibrantColor = setToolBar(fabButton, toolbar, false, isKitKat, null);
+        int vibrantColor = setToolBar(fabButton, toolbar, false, isKitKat, null);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,6 +110,7 @@ public class ZhihuStoryActivity extends BaseActivity implements IZhihuStory {
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         wvZhihu.setWebChromeClient(new WebChromeClient());
         ctl.setContentScrimColor(vibrantColor);
+        ctl.setBackgroundColor(vibrantColor);
         ctl.setStatusBarScrimColor(vibrantColor);
     }
 
@@ -197,7 +197,7 @@ public class ZhihuStoryActivity extends BaseActivity implements IZhihuStory {
 
     @Override
     public void showZhihuStory(ZhihuStory zhihuStory) {
-        Glide.with(ZhihuStoryActivity.this).load(zhihuStory.getImage()).into(ivZhihuStory);
+        ImageLoader.loadImage(ZhihuStoryActivity.this,zhihuStory.getImage(),ivZhihuStory);
         url = zhihuStory.getShareUrl();
         if (TextUtils.isEmpty(zhihuStory.getBody())) {
             wvZhihu.loadUrl(zhihuStory.getShareUrl());
@@ -209,13 +209,13 @@ public class ZhihuStoryActivity extends BaseActivity implements IZhihuStory {
 
     @Override
     public void showGuokrArticle(GuokrArticle guokrArticle) {
-        Glide.with(ZhihuStoryActivity.this).load(guokrArticle.getResult().getSmallImage()).into(ivZhihuStory);
+        ImageLoader.loadImage(ZhihuStoryActivity.this,guokrArticle.getResult().getSmallImage(),ivZhihuStory);
         url = guokrArticle.getResult().getUrl();
         if (TextUtils.isEmpty(guokrArticle.getResult().getContent())) {
             wvZhihu.loadUrl(guokrArticle.getResult().getUrl());
         } else {
             //解决图片显示问题,视频显示问题
-            String data = WebUtil.buildHtmlWithCss(guokrArticle.getResult().getContent().replaceAll("(style.*?\")>", "").replaceAll("width=\"(.*?)\"", "100%").replaceAll("height=\"(.*?)\"", "auto"), new String[]{"news.css"}, false);
+            String data = WebUtil.buildHtmlForIt(guokrArticle.getResult().getContent().replaceAll("(style.*?\")>", "").replaceAll("width=\"(.*?)\"", "100%").replaceAll("height=\"(.*?)\"", "auto"), Config.isNight);
             wvZhihu.loadDataWithBaseURL(WebUtil.BASE_URL, data, WebUtil.MIME_TYPE, WebUtil.ENCODING, WebUtil.FAIL_URL);
         }
     }

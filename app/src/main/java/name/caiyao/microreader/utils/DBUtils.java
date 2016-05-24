@@ -6,12 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.lang.String;
+
 import name.caiyao.microreader.config.Config;
 
 /**
  * Created by 蔡小木 on 2016/4/14 0014.
  */
 public class DBUtils {
+    public static final String CREATE_TABLE_IF_NOT_EXISTS = "create table if not exists %s " +
+            "(id integer  primary key autoincrement,key text unique,is_read integer)";
+
     private static DBUtils sDBUtis;
     private SQLiteDatabase mSQLiteDatabase;
 
@@ -56,11 +61,11 @@ public class DBUtils {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL("create table if not exists " + Config.GUOKR + "(id integer  primary key autoincrement,key text unique,is_read integer);");
-            db.execSQL("create table if not exists " + Config.IT + "(id integer primary key autoincrement,key text unique,is_read integer)");
-            db.execSQL("create table if not exists " + Config.VIDEO + "(id integer primary key autoincrement,key text unique,is_read integer)");
-            db.execSQL("create table if not exists " + Config.ZHIHU + "(id integer primary key autoincrement,key text unique,is_read integer)");
-            db.execSQL("create table if not exists " + Config.WEIXIN + "(id integer primary key autoincrement,key text unique,is_read integer)");
+            db.execSQL(String.format(CREATE_TABLE_IF_NOT_EXISTS, Config.GUOKR));
+            db.execSQL(String.format(CREATE_TABLE_IF_NOT_EXISTS, Config.IT));
+            db.execSQL(String.format(CREATE_TABLE_IF_NOT_EXISTS, Config.VIDEO));
+            db.execSQL(String.format(CREATE_TABLE_IF_NOT_EXISTS, Config.ZHIHU));
+            db.execSQL(String.format(CREATE_TABLE_IF_NOT_EXISTS, Config.WEIXIN));
         }
 
         @Override

@@ -36,5 +36,5 @@
 [2]: /screenshot/Screenshot_20160503-085853.png
 [3]: /screenshot/Screenshot_20160503-085902.png
 [4]: /screenshot/Screenshot_20160503-085945.png
-[5]: http://caiyao.name/releases/microreader_1.2.0.apk
+[5]: http://caiyao.name/releases/microreader_1.3.0.apk
 [6]: https://github.com/AndroidJiang

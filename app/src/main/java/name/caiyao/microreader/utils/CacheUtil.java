@@ -28,6 +28,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.Serializable;
+import java.lang.Long;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
@@ -805,8 +806,8 @@ public class CacheUtil {
                 while (saveTimeStr.startsWith("0")) {
                     saveTimeStr = saveTimeStr.substring(1, saveTimeStr.length());
                 }
-                long saveTime = Long.valueOf(saveTimeStr);
-                long deleteAfter = Long.valueOf(strs[1]);
+                long saveTime = Long.parseLong(saveTimeStr);
+                long deleteAfter = Long.parseLong(strs[1]);
                 if (System.currentTimeMillis() > saveTime + deleteAfter * 1000) {
                     return true;
                 }
@@ -874,7 +875,7 @@ public class CacheUtil {
         private static final char mSeparator = ' ';
 
         private static String createDateInfo(int second) {
-            String currentTime = System.currentTimeMillis() + "";
+            String currentTime = Long.toString(System.currentTimeMillis());
             while (currentTime.length() < 13) {
                 currentTime = "0" + currentTime;
             }

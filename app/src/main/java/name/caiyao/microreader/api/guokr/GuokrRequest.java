@@ -20,6 +20,7 @@ public class GuokrRequest {
 
     private GuokrRequest() {}
 
+    private static final String CACHE_CONTROL = "Cache-Control";
     protected static final Object monitor = new Object();
     private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
@@ -29,15 +30,15 @@ public class GuokrRequest {
                 int maxAge = 60; // 在线缓存在1分钟内可读取
                 return originalResponse.newBuilder()
                         .removeHeader("Pragma")
-                        .removeHeader("Cache-Control")
-                        .header("Cache-Control", "public, max-age=" + maxAge)
+                        .removeHeader(CACHE_CONTROL)
+                        .header(CACHE_CONTROL, "public, max-age=" + maxAge)
                         .build();
             } else {
                 int maxStale = 60 * 60 * 24 * 28; // 离线时缓存保存4周
                 return originalResponse.newBuilder()
                         .removeHeader("Pragma")
-                        .removeHeader("Cache-Control")
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+                        .removeHeader(CACHE_CONTROL)
+                        .header(CACHE_CONTROL, "public, only-if-cached, max-stale=" + maxStale)
                         .build();
             }
         }

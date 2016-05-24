@@ -38,18 +38,18 @@ public class VideoRequest {
         }
     };
 
-    static File httpCacheDirectory = new File(MicroApplication.getContext().getCacheDir(), "videoCache");
+    private static File httpCacheDirectory = new File(MicroApplication.getContext().getCacheDir(), "videoCache");
 
-    static int cacheSize = 10 * 1024 * 1024; // 10 MiB
-    static Cache cache = new Cache(httpCacheDirectory, cacheSize);
-    static OkHttpClient client = new OkHttpClient.Builder()
+    private static int cacheSize = 10 * 1024 * 1024; // 10 MiB
+    private static Cache cache = new Cache(httpCacheDirectory, cacheSize);
+    private static OkHttpClient client = new OkHttpClient.Builder()
             .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
             .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
             .cache(cache)
             .build();
 
     private static VideoRequstApi sVideoRequstApi = null;
-    protected static final Object monitor = new Object();
+    private static final Object monitor = new Object();
     public static VideoRequstApi getVideoRequstApi() {
         synchronized (monitor){
             if (sVideoRequstApi == null) {

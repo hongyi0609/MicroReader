@@ -21,7 +21,7 @@ public class GuokrRequest {
     private GuokrRequest() {}
 
     private static final String CACHE_CONTROL = "Cache-Control";
-    protected static final Object monitor = new Object();
+    private static final Object monitor = new Object();
     private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
@@ -44,11 +44,11 @@ public class GuokrRequest {
         }
     };
 
-    static File httpCacheDirectory = new File(MicroApplication.getContext().getCacheDir(), "guokrCache");
-    static int cacheSize = 10 * 1024 * 1024; // 10 MiB
-    static Cache cache = new Cache(httpCacheDirectory, cacheSize);
+    private static File httpCacheDirectory = new File(MicroApplication.getContext().getCacheDir(), "guokrCache");
+    private static int cacheSize = 10 * 1024 * 1024; // 10 MiB
+    private static Cache cache = new Cache(httpCacheDirectory, cacheSize);
 
-    static OkHttpClient client = new OkHttpClient.Builder()
+    private static OkHttpClient client = new OkHttpClient.Builder()
             .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
             .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)//不添加离线缓存无效
             .cache(cache)

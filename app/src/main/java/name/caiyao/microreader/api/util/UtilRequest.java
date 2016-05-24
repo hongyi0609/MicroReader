@@ -11,7 +11,7 @@ public class UtilRequest {
     private UtilRequest() {}
 
     private static UtilApi utilApi = null;
-    protected static final Object monitor = new Object();
+    private static final Object monitor = new Object();
 
     public static UtilApi getUtilApi() {
         synchronized (monitor) {

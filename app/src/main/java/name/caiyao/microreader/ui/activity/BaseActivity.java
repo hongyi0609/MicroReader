@@ -11,11 +11,11 @@ import android.view.MotionEvent;
 
 import com.bugtags.library.Bugtags;
 import com.example.swipebackactivity.app.SwipeBackActivity;
-import com.jaeger.library.StatusBarUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import name.caiyao.microreader.config.Config;
 import name.caiyao.microreader.utils.SharePreferenceUtil;
+import name.caiyao.microreader.utils.StatusBarUtil;
 
 public class BaseActivity extends SwipeBackActivity {
 

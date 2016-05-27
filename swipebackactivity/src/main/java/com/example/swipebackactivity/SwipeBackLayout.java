@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -459,7 +460,13 @@ public class SwipeBackLayout extends FrameLayout {
         a.recycle();
 
         ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
-        ViewGroup decorChild = (ViewGroup) decor.getChildAt(0);
+        ViewGroup decorChild;
+        //测试状态栏冲突问题
+        if (Build.VERSION_CODES.KITKAT == Build.VERSION.SDK_INT){
+            decorChild = (ViewGroup) decor.getChildAt(1);
+        }else{
+            decorChild = (ViewGroup) decor.getChildAt(0);
+        }
         decorChild.setBackgroundResource(background);
         decor.removeView(decorChild);
         addView(decorChild);

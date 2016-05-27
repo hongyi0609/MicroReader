@@ -191,9 +191,7 @@ public class CacheUtil {
      */
     public void put(String key, String value) {
         File file = mCache.newFile(key);
-        BufferedWriter out = null;
-        try {
-            out = new BufferedWriter(new FileWriter(file), 1024);
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(file), 1024)){
             out.write(value);
         } catch (IOException e) {
             e.printStackTrace();
@@ -232,9 +230,9 @@ public class CacheUtil {
         if (!file.exists())
             return null;
         boolean removeFile = false;
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new FileReader(file));
+
+        try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+
             String readString = "";
             String currentLine;
             while ((currentLine = in.readLine()) != null) {
@@ -250,13 +248,6 @@ public class CacheUtil {
             e.printStackTrace();
             return null;
         } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             if (removeFile)
                 remove(key);
         }
@@ -357,21 +348,11 @@ public class CacheUtil {
      */
     public void put(String key, byte[] value) {
         File file = mCache.newFile(key);
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(file);
+        try (FileOutputStream out = new FileOutputStream(file)) {
             out.write(value);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (out != null) {
-                try {
-                    out.flush();
-                    out.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             mCache.put(file);
         }
     }
@@ -417,13 +398,11 @@ public class CacheUtil {
      * @return byte 数据
      */
     public byte[] getAsBinary(String key) {
-        RandomAccessFile raFile = null;
         boolean removeFile = false;
-        try {
-            File file = mCache.get(key);
-            if (!file.exists())
-                return null;
-            raFile = new RandomAccessFile(file, "r");
+        File file = mCache.get(key);
+        if (!file.exists())
+            return null;
+        try (RandomAccessFile raFile = new RandomAccessFile(file, "r")) {
             byte[] byteArray = new byte[(int) raFile.length()];
             raFile.read(byteArray);
             if (!Utils.isDue(byteArray)) {
@@ -436,13 +415,6 @@ public class CacheUtil {
             e.printStackTrace();
             return null;
         } finally {
-            if (raFile != null) {
-                try {
-                    raFile.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
             if (removeFile)
                 remove(key);
         }
@@ -470,11 +442,8 @@ public class CacheUtil {
      * @param saveTime 保存的时间，单位：秒
      */
     public void put(String key, Serializable value, int saveTime) {
-        ByteArrayOutputStream baos;
-        ObjectOutputStream oos = null;
-        try {
-            baos = new ByteArrayOutputStream();
-            oos = new ObjectOutputStream(baos);
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+             ObjectOutputStream oos = new ObjectOutputStream(baos)) {
             oos.writeObject(value);
             byte[] data = baos.toByteArray();
             if (saveTime != -1) {
@@ -484,13 +453,6 @@ public class CacheUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (oos != null) {
-                    oos.close();
-                }
-            } catch (IOException ignored) {
-            }
         }
     }
 
@@ -503,29 +465,12 @@ public class CacheUtil {
     public Object getAsObject(String key) {
         byte[] data = getAsBinary(key);
         if (data != null) {
-            ByteArrayInputStream bais = null;
-            ObjectInputStream ois = null;
-            try {
-                bais = new ByteArrayInputStream(data);
-                ois = new ObjectInputStream(bais);
+            try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data))){
                 Object reObject = ois.readObject();
                 return reObject;
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
-            } finally {
-                try {
-                    if (bais != null)
-                        bais.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    if (ois != null)
-                        ois.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         }
         return null;

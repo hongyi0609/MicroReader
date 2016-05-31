@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -304,7 +305,7 @@ public class SwipeBackLayout extends FrameLayout {
     /**
      * Set a drawable used for edge shadow.
      *
-     * @param shadow    Drawable to use
+     * @param shadow   Drawable to use
      * @param edgeFlag Combination of edge flags describing the edge to set
      * @see #EDGE_LEFT
      * @see #EDGE_RIGHT
@@ -324,7 +325,7 @@ public class SwipeBackLayout extends FrameLayout {
     /**
      * Set a drawable used for edge shadow.
      *
-     * @param resId     Resource of drawable to use
+     * @param resId    Resource of drawable to use
      * @param edgeFlag Combination of edge flags describing the edge to set
      * @see #EDGE_LEFT
      * @see #EDGE_RIGHT
@@ -460,11 +461,12 @@ public class SwipeBackLayout extends FrameLayout {
         a.recycle();
 
         ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
+        Log.i("TAG", activity.getClass().getName() + ":" + decor.getChildCount());
         ViewGroup decorChild;
         //测试状态栏冲突问题
-        if (Build.VERSION_CODES.KITKAT == Build.VERSION.SDK_INT){
+        if (Build.VERSION_CODES.KITKAT == Build.VERSION.SDK_INT) {
             decorChild = (ViewGroup) decor.getChildAt(1);
-        }else{
+        } else {
             decorChild = (ViewGroup) decor.getChildAt(0);
         }
         decorChild.setBackgroundResource(background);

@@ -461,6 +461,7 @@ public class SwipeBackLayout extends FrameLayout {
         a.recycle();
 
         ViewGroup decor = (ViewGroup) activity.getWindow().getDecorView();
+        //6.0.1=1
         Log.i("TAG", activity.getClass().getName() + ":" + decor.getChildCount());
         ViewGroup decorChild;
         //测试状态栏冲突问题

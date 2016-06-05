@@ -46,7 +46,8 @@ public class StatusBarUtil {
             // 生成一个状态栏大小的矩形
             View statusView = createStatusBarView(activity, color, statusBarAlpha);
             // 添加 statusView 到布局中
-            ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
+            //2016-06-05修复状态栏与滑动返回冲突
+            ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView().findViewById(android.R.id.content);
             decorView.addView(statusView);
             setRootView(activity);
         }

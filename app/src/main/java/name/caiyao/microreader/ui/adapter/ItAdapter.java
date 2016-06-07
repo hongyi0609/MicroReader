@@ -3,12 +3,14 @@ package name.caiyao.microreader.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,8 +41,16 @@ public class ItAdapter extends RecyclerView.Adapter<ItAdapter.ItViewHolder> {
 
     @Override
     public ItViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ItViewHolder(LayoutInflater.from(mContext).inflate(R.layout.ithome_item, parent, false));
+        View view = LayoutInflater.from(mContext).inflate(R.layout.ithome_item, parent, false);
+        view.findViewById(R.id.it_card).getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                return false;
+            }
+        });
+        return new ItViewHolder(view);
     }
+
 
     @Override
     public void onBindViewHolder(final ItViewHolder holder, int position) {
@@ -108,7 +118,7 @@ public class ItAdapter extends RecyclerView.Adapter<ItAdapter.ItViewHolder> {
         return itHomeItems.size();
     }
 
-    public class ItViewHolder extends RecyclerView.ViewHolder {
+    class ItViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.iv_ithome)
         ImageView ivIthome;
@@ -120,8 +130,10 @@ public class ItAdapter extends RecyclerView.Adapter<ItAdapter.ItViewHolder> {
         TextView tvTime;
         @BindView(R.id.btn_it)
         Button btnIt;
+        @BindView(R.id.it_card)
+        CardView mCardView;
 
-        public ItViewHolder(View itemView) {
+        ItViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

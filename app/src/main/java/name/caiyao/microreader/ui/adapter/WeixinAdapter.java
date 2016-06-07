@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -104,7 +103,7 @@ public class WeixinAdapter extends RecyclerView.Adapter<WeixinAdapter.WeixinView
             }
         });
         runEnterAnimation(holder.itemView, position);
-        holder.cvMain.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DBUtils.getDB(mContext).insertHasRead(Config.WEIXIN, weixinNews.getUrl(), 1);
@@ -145,8 +144,6 @@ public class WeixinAdapter extends RecyclerView.Adapter<WeixinAdapter.WeixinView
         TextView tvTime;
         @BindView(R.id.tv_description)
         TextView tvDescription;
-        @BindView(R.id.cv_main)
-        CardView cvMain;
         @BindView(R.id.btn_weixin)
         Button btnWeixin;
 

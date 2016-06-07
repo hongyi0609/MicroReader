@@ -23,6 +23,7 @@ import name.caiyao.microreader.presenter.IWeixinPresenter;
 import name.caiyao.microreader.presenter.impl.WeiXinPresenterImpl;
 import name.caiyao.microreader.ui.adapter.WeixinAdapter;
 import name.caiyao.microreader.ui.iView.IWeixinFragment;
+import name.caiyao.microreader.ui.view.DividerItemDecoration;
 import name.caiyao.microreader.utils.NetWorkUtil;
 import name.caiyao.microreader.utils.SharePreferenceUtil;
 
@@ -43,7 +44,7 @@ public class WeixinFragment extends BaseFragment implements SwipeRefreshLayout.O
     private int currentPage = 1;
     private LinearLayoutManager mLinearLayoutManager;
     private boolean loading = false;
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private int pastVisiblesItems, visibleItemCount, totalItemCount;
 
     public WeixinFragment() {
     }
@@ -52,7 +53,7 @@ public class WeixinFragment extends BaseFragment implements SwipeRefreshLayout.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_common, container, false);
-        mUnbinder= ButterKnife.bind(this, view);
+        mUnbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -70,6 +71,7 @@ public class WeixinFragment extends BaseFragment implements SwipeRefreshLayout.O
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         swipeTarget.setLayoutManager(mLinearLayoutManager);
         swipeTarget.setHasFixedSize(true);
+        swipeTarget.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         swipeTarget.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -86,7 +88,7 @@ public class WeixinFragment extends BaseFragment implements SwipeRefreshLayout.O
                 }
             }
         });
-        weixinAdapter = new WeixinAdapter(getActivity(),weixinNewses);
+        weixinAdapter = new WeixinAdapter(getActivity(), weixinNewses);
         swipeTarget.setAdapter(weixinAdapter);
         mWeixinPresenter.getWeixinNews(1);
         if (SharePreferenceUtil.isRefreshOnlyWifi(getActivity())) {

@@ -47,7 +47,7 @@ public class ItHomeFragment extends BaseFragment implements SwipeRefreshLayout.O
     private String currentNewsId = "0";
     private LinearLayoutManager mLinearLayoutManager;
     private boolean loading = false;
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private int pastVisiblesItems, visibleItemCount, totalItemCount;
 
     @Nullable
     @Override

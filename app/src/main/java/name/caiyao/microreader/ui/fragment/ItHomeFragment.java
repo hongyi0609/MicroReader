@@ -23,6 +23,7 @@ import name.caiyao.microreader.presenter.IItHomePresenter;
 import name.caiyao.microreader.presenter.impl.ItHomePresenterImpl;
 import name.caiyao.microreader.ui.adapter.ItAdapter;
 import name.caiyao.microreader.ui.iView.IItHomeFragment;
+import name.caiyao.microreader.ui.view.DividerItemDecoration;
 import name.caiyao.microreader.utils.NetWorkUtil;
 import name.caiyao.microreader.utils.SharePreferenceUtil;
 
@@ -70,6 +71,7 @@ public class ItHomeFragment extends BaseFragment implements SwipeRefreshLayout.O
         setSwipeRefreshLayoutColor(swipeRefreshLayout);
         swipeTarget.setLayoutManager(mLinearLayoutManager);
         swipeTarget.setHasFixedSize(true);
+        swipeTarget.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         swipeTarget.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

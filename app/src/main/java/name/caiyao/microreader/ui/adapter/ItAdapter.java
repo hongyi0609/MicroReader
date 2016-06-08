@@ -3,14 +3,11 @@ package name.caiyao.microreader.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +28,9 @@ import name.caiyao.microreader.utils.ImageLoader;
  */
 public class ItAdapter extends RecyclerView.Adapter<ItAdapter.ItViewHolder> {
 
+    //解决item状态混乱问题
+    private SparseBooleanArray mSparseBooleanArray = new SparseBooleanArray();
+
     private ArrayList<ItHomeItem> itHomeItems;
     private Context mContext;
 
@@ -41,19 +41,12 @@ public class ItAdapter extends RecyclerView.Adapter<ItAdapter.ItViewHolder> {
 
     @Override
     public ItViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.ithome_item, parent, false);
-        view.findViewById(R.id.it_card).getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                return false;
-            }
-        });
-        return new ItViewHolder(view);
+        return new ItViewHolder(LayoutInflater.from(mContext).inflate(R.layout.ithome_item, parent, false));
     }
 
 
     @Override
-    public void onBindViewHolder(final ItViewHolder holder, int position) {
+    public void onBindViewHolder(final ItViewHolder holder,int position) {
         final ItHomeItem itHomeItem = itHomeItems.get(holder.getAdapterPosition());
         if (DBUtils.getDB(mContext).isRead(Config.IT, itHomeItem.getNewsid(), 1))
             holder.tvTitle.setTextColor(Color.GRAY);
@@ -72,43 +65,25 @@ public class ItAdapter extends RecyclerView.Adapter<ItAdapter.ItViewHolder> {
                         .putExtra("item", itHomeItem));
             }
         });
-        holder.btnIt.setOnClickListener(new View.OnClickListener() {
+        if (mSparseBooleanArray.get(Integer.parseInt(itHomeItem.getNewsid()))){
+            holder.btnDetail.setBackgroundResource(R.drawable.ic_expand_less_black_24px);
+            holder.tvDescription.setVisibility(View.VISIBLE);
+        }else{
+            holder.btnDetail.setBackgroundResource(R.drawable.ic_expand_more_black_24px);
+            holder.tvDescription.setVisibility(View.GONE);
+        }
+        holder.btnDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(mContext, holder.btnIt);
-                popupMenu.getMenuInflater().inflate(R.menu.pop_menu, popupMenu.getMenu());
-                popupMenu.getMenu().removeItem(R.id.pop_fav);
-                final boolean isRead = DBUtils.getDB(mContext).isRead(Config.IT, itHomeItem.getNewsid(), 1);
-                if (!isRead)
-                    popupMenu.getMenu().findItem(R.id.pop_unread).setTitle(R.string.common_set_read);
-                else
-                    popupMenu.getMenu().findItem(R.id.pop_unread).setTitle(R.string.common_set_unread);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.pop_unread:
-                                if (isRead) {
-                                    DBUtils.getDB(mContext).insertHasRead(Config.IT, itHomeItem.getNewsid(), 0);
-                                    holder.tvTitle.setTextColor(Color.BLACK);
-                                } else {
-                                    DBUtils.getDB(mContext).insertHasRead(Config.IT, itHomeItem.getNewsid(), 1);
-                                    holder.tvTitle.setTextColor(Color.GRAY);
-                                }
-                                break;
-                            case R.id.pop_share:
-                                Intent shareIntent = new Intent();
-                                shareIntent.setAction(Intent.ACTION_SEND);
-                                shareIntent.putExtra(Intent.EXTRA_TEXT, itHomeItem.getTitle() + " http://ithome.com" + itHomeItem.getUrl() + mContext.getString(R.string.share_tail));
-                                shareIntent.setType("text/plain");
-                                //设置分享列表的标题，并且每次都显示分享列表
-                                mContext.startActivity(Intent.createChooser(shareIntent, mContext.getString(R.string.share)));
-                                break;
-                        }
-                        return true;
-                    }
-                });
-                popupMenu.show();
+                if (holder.tvDescription.getVisibility() == View.GONE) {
+                    holder.btnDetail.setBackgroundResource(R.drawable.ic_expand_less_black_24px);
+                    holder.tvDescription.setVisibility(View.VISIBLE);
+                    mSparseBooleanArray.put(Integer.parseInt(itHomeItem.getNewsid()),true);
+                } else {
+                    holder.btnDetail.setBackgroundResource(R.drawable.ic_expand_more_black_24px);
+                    holder.tvDescription.setVisibility(View.GONE);
+                    mSparseBooleanArray.put(Integer.parseInt(itHomeItem.getNewsid()),false);
+                }
             }
         });
     }
@@ -128,10 +103,8 @@ public class ItAdapter extends RecyclerView.Adapter<ItAdapter.ItViewHolder> {
         TextView tvDescription;
         @BindView(R.id.tv_time)
         TextView tvTime;
-        @BindView(R.id.btn_it)
-        Button btnIt;
-        @BindView(R.id.it_card)
-        CardView mCardView;
+        @BindView(R.id.btn_detail)
+        Button btnDetail;
 
         ItViewHolder(View itemView) {
             super(itemView);

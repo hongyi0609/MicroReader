@@ -3,10 +3,9 @@ package name.caiyao.microreader.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,6 +27,9 @@ import name.caiyao.microreader.utils.ImageLoader;
  * Created by 蔡小木 on 2016/4/27 0027.
  */
 public class GuokrAdapter extends RecyclerView.Adapter<GuokrAdapter.GuokrViewHolder> {
+
+    //解决item状态混乱问题
+    private SparseBooleanArray mSparseBooleanArray = new SparseBooleanArray();
 
     private ArrayList<GuokrHotItem> guokrHotItems;
     private Context mContext;
@@ -52,7 +54,7 @@ public class GuokrAdapter extends RecyclerView.Adapter<GuokrAdapter.GuokrViewHol
         holder.mTvTitle.setText(guokrHotItem.getTitle());
         holder.mTvDescription.setText(guokrHotItem.getSummary());
         holder.mTvTime.setText(guokrHotItem.getTime());
-        ImageLoader.loadImage(mContext,guokrHotItem.getSmallImage(),holder.mIvIthome);
+        ImageLoader.loadImage(mContext, guokrHotItem.getSmallImage(), holder.mIvIthome);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,39 +67,25 @@ public class GuokrAdapter extends RecyclerView.Adapter<GuokrAdapter.GuokrViewHol
                 mContext.startActivity(intent);
             }
         });
-        holder.mBtnIt.setOnClickListener(new View.OnClickListener() {
+        if (mSparseBooleanArray.get(Integer.parseInt(guokrHotItem.getId()))){
+            holder.btnDetail.setBackgroundResource(R.drawable.ic_expand_less_black_24px);
+            holder.mTvDescription.setVisibility(View.VISIBLE);
+        }else{
+            holder.btnDetail.setBackgroundResource(R.drawable.ic_expand_more_black_24px);
+            holder.mTvDescription.setVisibility(View.GONE);
+        }
+        holder.btnDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PopupMenu popupMenu = new PopupMenu(mContext, holder.mBtnIt);
-                popupMenu.getMenuInflater().inflate(R.menu.pop_menu, popupMenu.getMenu());
-                popupMenu.getMenu().removeItem(R.id.pop_share);
-                popupMenu.getMenu().removeItem(R.id.pop_fav);
-                final boolean isRead = DBUtils.getDB(mContext).isRead(Config.GUOKR, guokrHotItem.getId(), 1);
-                if (!isRead)
-                    popupMenu.getMenu().findItem(R.id.pop_unread).setTitle(R.string.common_set_read);
-                else
-                    popupMenu.getMenu().findItem(R.id.pop_unread).setTitle(R.string.common_set_unread);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.pop_fav:
-
-                                break;
-                            case R.id.pop_unread:
-                                if (isRead) {
-                                    DBUtils.getDB(mContext).insertHasRead(Config.GUOKR, guokrHotItem.getId(), 0);
-                                    holder.mTvTitle.setTextColor(Color.BLACK);
-                                } else {
-                                    DBUtils.getDB(mContext).insertHasRead(Config.GUOKR, guokrHotItem.getId(), 1);
-                                    holder.mTvTitle.setTextColor(Color.GRAY);
-                                }
-                                break;
-                        }
-                        return true;
-                    }
-                });
-                popupMenu.show();
+                if (holder.mTvDescription.getVisibility() == View.GONE) {
+                    holder.btnDetail.setBackgroundResource(R.drawable.ic_expand_less_black_24px);
+                    holder.mTvDescription.setVisibility(View.VISIBLE);
+                    mSparseBooleanArray.put(Integer.parseInt(guokrHotItem.getId()), true);
+                } else {
+                    holder.btnDetail.setBackgroundResource(R.drawable.ic_expand_more_black_24px);
+                    holder.mTvDescription.setVisibility(View.GONE);
+                    mSparseBooleanArray.put(Integer.parseInt(guokrHotItem.getId()), false);
+                }
             }
         });
     }
@@ -107,7 +95,7 @@ public class GuokrAdapter extends RecyclerView.Adapter<GuokrAdapter.GuokrViewHol
         return guokrHotItems.size();
     }
 
-    public class GuokrViewHolder extends RecyclerView.ViewHolder {
+    class GuokrViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_title)
         TextView mTvTitle;
@@ -117,10 +105,10 @@ public class GuokrAdapter extends RecyclerView.Adapter<GuokrAdapter.GuokrViewHol
         TextView mTvDescription;
         @BindView(R.id.tv_time)
         TextView mTvTime;
-        @BindView(R.id.btn_it)
-        Button mBtnIt;
+        @BindView(R.id.btn_detail)
+        Button btnDetail;
 
-        public GuokrViewHolder(View itemView) {
+        GuokrViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

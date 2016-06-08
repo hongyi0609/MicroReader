@@ -1,75 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/it_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/cardview_margin"
-    android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardCornerRadius="@dimen/cardview_margin"
-    card_view:cardElevation="@dimen/cardview_margin">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/cardview_margin"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/iv_ithome"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:paddingTop="5dp"
+            android:scaleType="fitCenter"
+            tools:ignore="ContentDescription"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingEnd="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingStart="5dp"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/cardview_title"/>
+            android:layout_margin="@dimen/cardview_margin"
+            android:layout_weight="3">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/iv_ithome"
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_weight="1"
-                android:paddingTop="5dp"
-                android:scaleType="fitCenter"
-                tools:ignore="ContentDescription"/>
-
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/cardview_margin"
-                android:layout_weight="3"
-                android:orientation="vertical">
+                android:padding="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/cardview_title"/>
 
-                <TextView
-                    android:id="@+id/tv_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"/>
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@id/tv_title"
+                android:padding="5dp"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"/>
 
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|bottom"
-                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"/>
-
-            </LinearLayout>
 
             <Button
-                android:id="@+id/btn_it"
+                android:id="@+id/btn_detail"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/ic_more_vert_black_24px"/>
-        </LinearLayout>
+                android:padding="5dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/tv_title"
+                android:background="@drawable/ic_expand_more_black_24px"/>
+        </RelativeLayout>
+
     </LinearLayout>
-</android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="7dp"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+        android:visibility="gone"/>
+</LinearLayout>

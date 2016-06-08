@@ -23,6 +23,7 @@ import name.caiyao.microreader.presenter.IGuokrPresenter;
 import name.caiyao.microreader.presenter.impl.GuokrPresenterImpl;
 import name.caiyao.microreader.ui.adapter.GuokrAdapter;
 import name.caiyao.microreader.ui.iView.IGuokrFragment;
+import name.caiyao.microreader.ui.view.DividerItemDecoration;
 import name.caiyao.microreader.utils.NetWorkUtil;
 import name.caiyao.microreader.utils.SharePreferenceUtil;
 
@@ -73,6 +74,7 @@ public class GuokrFragment extends BaseFragment implements SwipeRefreshLayout.On
         setSwipeRefreshLayoutColor(swipeRefreshLayout);
         swipeTarget.setLayoutManager(mLinearLayoutManager);
         swipeTarget.setHasFixedSize(true);
+        swipeTarget.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         swipeTarget.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

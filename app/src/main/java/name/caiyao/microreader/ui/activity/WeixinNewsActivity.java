@@ -161,7 +161,6 @@ public class WeixinNewsActivity extends BaseActivity {
         wvWeixin.loadUrl(url);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_share, menu);

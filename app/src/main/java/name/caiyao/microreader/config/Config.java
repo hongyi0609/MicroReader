@@ -36,16 +36,8 @@ public class Config {
             return title;
         }
 
-        public void setTitle(int title) {
-            this.title = title;
-        }
-
         public int getIcon() {
             return icon;
-        }
-
-        public void setIcon(int icon) {
-            this.icon = icon;
         }
     }
 }

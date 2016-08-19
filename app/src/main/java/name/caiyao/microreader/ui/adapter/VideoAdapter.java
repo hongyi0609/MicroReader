@@ -21,8 +21,6 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -148,30 +146,25 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();
                             try {
-                                String shareUrl;
-                                Pattern pattern = Pattern.compile(".*?target=\"_blank\">(.*?)</a>.*?");
-                                final Matcher matcher = pattern.matcher(responseBody.string());
-                                shareUrl = weiboVideoBlog.getBlog().getPageInfo().getVideoUrl();
+                                String shareUrl = weiboVideoBlog.getBlog().getPageInfo().getVideoUrl();
+                                String url = responseBody.string();
                                 if (TextUtils.isEmpty(shareUrl)) {
                                     Toast.makeText(mContext, "播放地址为空", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
                                 Log.i("TAG", shareUrl);
-                                if (matcher.find() && matcher.group(1).endsWith(".mp4")) {
+                                Log.i("TAG", url);
+                                if (url.contains("http")) {
                                     mContext.startActivity(new Intent(mContext, VideoActivity.class)
-                                            .putExtra("url", matcher.group(1))
+                                            .putExtra("url", url)
                                             .putExtra("shareUrl", shareUrl)
                                             .putExtra("title", title));
                                 } else {
-                                    String url = shareUrl;
-                                    if (matcher.find())
-                                        url = matcher.group(1);
-                                    Log.i("TAG", url);
                                     if (SharePreferenceUtil.isUseLocalBrowser(mContext))
-                                        mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                                        mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(shareUrl)));
                                     else
                                         mContext.startActivity(new Intent(mContext, VideoWebViewActivity.class)
-                                                .putExtra("url", url));
+                                                .putExtra("url", shareUrl));
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();

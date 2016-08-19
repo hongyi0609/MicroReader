@@ -12,6 +12,6 @@ import rx.Observable;
 public interface UtilApi {
 
     @FormUrlEncoded
-    @POST("http://www.weibovideo.com")
+    @POST("http://www.weibovideo.com/controller.php")
     Observable<ResponseBody> getVideoUrl(@Field("weibourl") String weibourl);
 }

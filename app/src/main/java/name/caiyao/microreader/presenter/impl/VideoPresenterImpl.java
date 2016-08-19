@@ -52,7 +52,12 @@ public class VideoPresenterImpl extends BasePresenterImpl implements IVideoPrese
                                 if (w.getBlog().getmBlog() != null)//处理转发的微博
                                     w.setBlog(w.getBlog().getmBlog());
                                 if (w.getBlog().getPageInfo() != null && !TextUtils.isEmpty(w.getBlog().getPageInfo().getVideoPic()))//处理无视频微博
+                                {
+                                    if (w.getBlog().getPageInfo().getVideoUrl().contains("m.weibo.cn"))
+                                        w.getBlog().getPageInfo().setVideoUrl("http://weibo.com/p/" + w.getBlog().getPageInfo().getVideoUrl().split("=")[1]);
                                     arrayList.add(w);
+                                }
+
                             }
                         }
                         return arrayList;

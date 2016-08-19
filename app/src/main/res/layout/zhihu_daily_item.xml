@@ -1,59 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:orientation="horizontal"
+    android:padding="@dimen/cardview_margin"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cv_zhihu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/cardview_margin"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="@dimen/cardview_margin"
-        app:cardElevation="@dimen/cardview_margin">
+    <ImageView
+        android:id="@+id/iv_zhihu_daily"
+        android:layout_height="80dp"
+        android:layout_weight="1"
+        android:layout_width="0dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:layout_width="0dp">
+
+        <TextView
+            android:id="@+id/tv_zhihu_daily"
             android:layout_height="wrap_content"
-            android:padding="@dimen/cardview_margin"
-            android:orientation="horizontal">
+            android:layout_width="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/cardview_title"/>
 
-            <ImageView
-                android:id="@+id/iv_zhihu_daily"
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_weight="1"
-                tools:ignore="ContentDescription" />
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"/>
+    </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3">
-
-                <TextView
-                    android:id="@+id/tv_zhihu_daily"
-                    android:layout_width="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/cardview_title" />
-
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
-            </RelativeLayout>
-            <Button
-                android:id="@+id/btn_zhihu"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@drawable/ic_more_vert_black_24px"/>
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-</RelativeLayout>
+    <Button
+        android:background="@drawable/ic_more_vert_black_24px"
+        android:id="@+id/btn_zhihu"
+        android:layout_height="25dp"
+        android:layout_width="25dp"/>
+</LinearLayout>

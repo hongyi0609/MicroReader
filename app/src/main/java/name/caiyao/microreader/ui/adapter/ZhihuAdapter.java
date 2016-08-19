@@ -3,7 +3,6 @@ package name.caiyao.microreader.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -55,7 +54,7 @@ public class ZhihuAdapter extends RecyclerView.Adapter<ZhihuAdapter.ZhihuViewHol
             holder.tvZhihuDaily.setTextColor(Color.BLACK);
         holder.tvZhihuDaily.setText(zhihuDailyItem.getTitle());
         holder.tvTime.setText(zhihuDailyItem.getDate());
-        holder.cvZhihu.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DBUtils.getDB(mContext).insertHasRead(Config.ZHIHU, zhihuDailyItem.getId(), 1);
@@ -125,8 +124,6 @@ public class ZhihuAdapter extends RecyclerView.Adapter<ZhihuAdapter.ZhihuViewHol
         ImageView ivZhihuDaily;
         @BindView(R.id.tv_zhihu_daily)
         TextView tvZhihuDaily;
-        @BindView(R.id.cv_zhihu)
-        CardView cvZhihu;
         @BindView(R.id.tv_time)
         TextView tvTime;
         @BindView(R.id.btn_zhihu)

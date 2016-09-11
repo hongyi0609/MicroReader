@@ -3,6 +3,7 @@ package name.caiyao.microreader.bean.itHome;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
@@ -11,6 +12,8 @@ import org.simpleframework.xml.Root;
  */
 @Root(name = "item")
 public class ItHomeItem implements Parcelable {
+    @Attribute(name = "t",required = false)
+    private String t;
     @Element(name = "newsid")
     private String newsid;
     @Element(name = "title")

@@ -297,8 +297,7 @@ public class CacheUtil {
     public JSONObject getAsJSONObject(String key) {
         String jsonString = getAsString(key);
         try {
-            JSONObject obj = new JSONObject(jsonString);
-            return obj;
+            return new JSONObject(jsonString);
         } catch (Exception e) {
             return null;
         }
@@ -338,8 +337,7 @@ public class CacheUtil {
     public JSONArray getAsJSONArray(String key) {
         String jsonstring = getAsString(key);
         try {
-            JSONArray obj = new JSONArray(jsonstring);
-            return obj;
+            return new JSONArray(jsonstring);
         } catch (Exception e) {
             //e.printStackTrace();
             return null;
@@ -509,8 +507,7 @@ public class CacheUtil {
             try {
                 bais = new ByteArrayInputStream(data);
                 ois = new ObjectInputStream(bais);
-                Object reObject = ois.readObject();
-                return reObject;
+                return ois.readObject();
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -703,6 +700,7 @@ public class CacheUtil {
             cacheSize.addAndGet(valueSize);
 
             Long currentTime = System.currentTimeMillis();
+            //noinspection ResultOfMethodCallIgnored
             file.setLastModified(currentTime);
             lastUsageDates.put(file, currentTime);
         }
@@ -710,6 +708,7 @@ public class CacheUtil {
         private File get(String key) {
             File file = newFile(key);
             Long currentTime = System.currentTimeMillis();
+            //noinspection ResultOfMethodCallIgnored
             file.setLastModified(currentTime);
             lastUsageDates.put(file, currentTime);
 

@@ -42,6 +42,7 @@ public class VideoWebViewActivity extends BaseActivity {
         webSettings.setAllowFileAccess(true);
         webSettings.setLoadWithOverviewMode(true);
         wvVideo.setWebViewClient(new WebViewClient() {
+            @SuppressWarnings("deprecation")
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String urlTo) {
                 //处理自动跳转到浏览器的问题

@@ -1,7 +1,9 @@
 package name.caiyao.microreader.ui.activity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -98,7 +101,6 @@ public class ItHomeActivity extends BaseActivity implements IItHomeArticle {
         settings.setDomStorageEnabled(true);
         settings.setAppCacheEnabled(true);
         settings.setJavaScriptEnabled(true);
-        settings.setPluginState(WebSettings.PluginState.ON);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
@@ -106,6 +108,15 @@ public class ItHomeActivity extends BaseActivity implements IItHomeArticle {
         settings.setAppCacheEnabled(true);
         settings.setLoadWithOverviewMode(true);
         wvIt.setWebViewClient(new WebViewClient() {
+
+            @TargetApi(Build.VERSION_CODES.N)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                view.loadUrl(request.getUrl().getHost());
+                return true;
+            }
+
+            @SuppressWarnings("deprecation")
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);

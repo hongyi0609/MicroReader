@@ -144,13 +144,12 @@ public class VideoActivity extends AppCompatActivity {
 
                     mDecor.setPadding(0,0,0,0);
 
-                    WindowManager.LayoutParams p = mDecorLayoutParams;
-                    p.verticalMargin = 0;
-                    p.horizontalMargin = 0;
-                    p.width = mAnchor.getWidth();
-                    p.gravity = Gravity.LEFT|Gravity.TOP;
-                    p.x = anchorPos[0];// + (mAnchor.getWidth() - p.width) / 2;
-                    p.y = anchorPos[1] + mAnchor.getHeight() - mDecor.getMeasuredHeight();
+                    mDecorLayoutParams.verticalMargin = 0;
+                    mDecorLayoutParams.horizontalMargin = 0;
+                    mDecorLayoutParams.width = mAnchor.getWidth();
+                    mDecorLayoutParams.gravity = Gravity.LEFT|Gravity.TOP;
+                    mDecorLayoutParams.x = anchorPos[0];// + (mAnchor.getWidth() - p.width) / 2;
+                    mDecorLayoutParams.y = anchorPos[1] + mAnchor.getHeight() - mDecor.getMeasuredHeight();
                     mWindowManager.updateViewLayout(mDecor, mDecorLayoutParams);
 
 

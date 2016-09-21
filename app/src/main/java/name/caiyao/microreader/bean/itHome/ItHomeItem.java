@@ -40,6 +40,8 @@ public class ItHomeItem implements Parcelable {
     private String tags;
     @Element(required = false,name = "z")
     private String z;
+    @Element(required = false,name = "cid")
+    private int cid;
 
     public ItHomeItem() {
     }

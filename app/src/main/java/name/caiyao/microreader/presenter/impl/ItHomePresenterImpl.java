@@ -68,6 +68,7 @@ public class ItHomePresenterImpl extends BasePresenterImpl implements IItHomePre
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         mItHomeFragment.hidProgressDialog();
                         mItHomeFragment.showError(e.getMessage());
                     }

@@ -145,6 +145,7 @@
 -dontwarn android.net.http.AndroidHttpClient
 -dontwarn com.bugtags.library.vender.**
 -dontwarn com.bugtags.library.**
+-dontwarn io.bugtags.**
 
 -keepclassmembers class * {
    public <init> (org.json.JSONObject);

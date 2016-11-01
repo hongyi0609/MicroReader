@@ -36,6 +36,7 @@ public class ItHomeArticlePresenterImpl extends BasePresenterImpl implements IIt
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         mIItHomeArticle.showError(e.getMessage());
                     }
 

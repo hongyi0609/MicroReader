@@ -7,7 +7,7 @@ import org.simpleframework.xml.Root;
 /**
  * Created by 蔡小木 on 2016/3/24 0024.
  */
-@Root(name = "rss")
+@Root(name = "rss",strict=false)
 public class ItHomeArticle {
     @Path("channel/item")
     @Element(name = "newssource")
@@ -19,11 +19,6 @@ public class ItHomeArticle {
     @Element(name = "detail")
     private String detail;
     @Path("channel/item")
-    @Element(required = false,name = "z")
-    private String z;
-    @Path("channel/item")
-    @Element(required = false,name = "tags")
-    private String tags;
 
     public String getNewssource() {
         return newssource;
@@ -47,5 +42,13 @@ public class ItHomeArticle {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public String getNewsauthor() {
+        return newsauthor;
+    }
+
+    public void setNewsauthor(String newsauthor) {
+        this.newsauthor = newsauthor;
     }
 }

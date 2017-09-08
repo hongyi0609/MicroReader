@@ -9,6 +9,7 @@ android {
         maven { url "https://jitpack.io" }
     }
     defaultConfig {
+//        multiDexEnabled true
         applicationId "name.caiyao.microreader"
         minSdkVersion 16
         targetSdkVersion 25
@@ -75,6 +76,9 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.bugtags.library:bugtags-lib:latest.integration'
     compile 'com.umeng.analytics:analytics:latest.integration'
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     compile project(':swipebackactivity')
 }
 

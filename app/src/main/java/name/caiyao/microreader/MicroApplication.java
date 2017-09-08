@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.bugtags.library.Bugtags;
 import com.bugtags.library.BugtagsOptions;
+import com.squareup.leakcanary.LeakCanary;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -17,7 +18,12 @@ public class MicroApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
         BugtagsOptions options = new BugtagsOptions.Builder().
                 trackingLocation(true).//是否获取位置
                 trackingCrashLog(!BuildConfig.DEBUG).//是否收集crash

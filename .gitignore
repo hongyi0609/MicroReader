@@ -1,6 +1,13 @@
+.DS_Store
 *.iml
-.gradle
-/local.properties
+**/.gradle
+**/captures
+**/.bugtags.log
+**/settings.gradle
+**/bin
+**/gen
+**/local.properties
+**/.idea
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store

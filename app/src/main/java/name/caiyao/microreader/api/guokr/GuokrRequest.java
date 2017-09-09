@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.IOException;
 
 import name.caiyao.microreader.MicroApplication;
+import name.caiyao.microreader.api.generator.RequestGenerator;
 import name.caiyao.microreader.utils.NetWorkUtil;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 /**
  * Created by 蔡小木 on 2016/3/7 0007.
@@ -59,12 +59,16 @@ public class GuokrRequest {
     public static GuokrApi getGuokrApi() {
         synchronized (monitor) {
             if (guokrApi == null) {
-                guokrApi = new Retrofit.Builder()
-                        .baseUrl("http://www.guokr.com")
-                        .client(client)
-                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build().create(GuokrApi.class);
+//                guokrApi = new Retrofit.Builder()
+//                        .baseUrl("http://www.guokr.com")
+//                        .client(client)
+//                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                        .addConverterFactory(GsonConverterFactory.create())
+//                        .build().create(GuokrApi.class);
+                RequestGenerator.setHttpCacheDirectory("guokrCache");
+                RequestGenerator.cacheConfigration(RequestGenerator.getHttpCacheDirectory(), 10*1000*1000);
+                RequestGenerator.obtainRetrofit("http://www.guokr.com", GsonConverterFactory.create());
+                guokrApi = RequestGenerator.getServiceApi(GuokrApi.class);
             }
             return guokrApi;
         }

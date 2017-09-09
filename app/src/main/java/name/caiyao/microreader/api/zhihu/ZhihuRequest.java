@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.IOException;
 
 import name.caiyao.microreader.MicroApplication;
+import name.caiyao.microreader.api.generator.RequestGenerator;
 import name.caiyao.microreader.utils.NetWorkUtil;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 /**
  * Created by 蔡小木 on 2016/3/6 0006.
@@ -56,12 +56,16 @@ public class ZhihuRequest {
     public static ZhihuApi getZhihuApi() {
         synchronized (monitor){
             if (zhihuApi == null) {
-                zhihuApi = new Retrofit.Builder()
-                        .baseUrl("http://news-at.zhihu.com")
-                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                        .client(client)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build().create(ZhihuApi.class);
+//                zhihuApi = new Retrofit.Builder()
+//                        .baseUrl("http://news-at.zhihu.com")
+//                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                        .client(client)
+//                        .addConverterFactory(GsonConverterFactory.create())
+//                        .build().create(ZhihuApi.class);
+                RequestGenerator.setHttpCacheDirectory("zhihuCache");
+                RequestGenerator.cacheConfigration(RequestGenerator.getHttpCacheDirectory(), 10*1000*1000);
+                RequestGenerator.obtainRetrofit("http://news-at.zhihu.com", GsonConverterFactory.create());
+                zhihuApi = RequestGenerator.getServiceApi(ZhihuApi.class);
             }
             return zhihuApi;
         }

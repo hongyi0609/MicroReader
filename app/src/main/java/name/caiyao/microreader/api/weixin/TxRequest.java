@@ -4,14 +4,14 @@ import java.io.File;
 import java.io.IOException;
 
 import name.caiyao.microreader.MicroApplication;
+import name.caiyao.microreader.api.generator.RequestGenerator;
 import name.caiyao.microreader.utils.NetWorkUtil;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 /**
  * Created by 蔡小木 on 2016/3/4 0004.
@@ -57,12 +57,16 @@ public class TxRequest {
     public static TxApi getTxApi() {
         synchronized (monitor){
             if (txApi == null) {
-                txApi = new Retrofit.Builder()
-                        .baseUrl("http://api.huceo.com")
-                        .client(client)
-                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build().create(TxApi.class);
+//                txApi = new Retrofit.Builder()
+//                        .baseUrl("http://api.huceo.com")
+//                        .client(client)
+//                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                        .addConverterFactory(GsonConverterFactory.create())
+//                        .build().create(TxApi.class);
+                RequestGenerator.setHttpCacheDirectory("txCache");
+                RequestGenerator.cacheConfigration(RequestGenerator.getHttpCacheDirectory(), 10*1000*1000);
+                RequestGenerator.obtainRetrofit("http://api.huceo.com", GsonConverterFactory.create());
+                txApi = RequestGenerator.getServiceApi(TxApi.class);
             }
             return txApi;
         }

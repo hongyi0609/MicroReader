@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import name.caiyao.microreader.MicroApplication;
+import name.caiyao.microreader.api.generator.RequestGenerator;
 import name.caiyao.microreader.utils.NetWorkUtil;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
@@ -57,12 +58,16 @@ public class ItHomeRequest {
     public static ItHomeApi getItHomeApi() {
         synchronized (monitor) {
             if (itHomeApi == null) {
-                itHomeApi = new Retrofit.Builder()
-                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                        .addConverterFactory(SimpleXmlConverterFactory.create())
-                        .client(client)
-                        .baseUrl("http://api.ithome.com")
-                        .build().create(ItHomeApi.class);
+//                itHomeApi = new Retrofit.Builder()
+//                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                        .addConverterFactory(SimpleXmlConverterFactory.create())
+//                        .client(client)
+//                        .baseUrl("http://api.ithome.com")
+//                        .build().create(ItHomeApi.class);
+                RequestGenerator.setHttpCacheDirectory("itCache");
+                RequestGenerator.cacheConfigration(RequestGenerator.getHttpCacheDirectory(), 10 * 1024 * 1024);
+                RequestGenerator.obtainRetrofit("http://api.ithome.com", SimpleXmlConverterFactory.create());
+                itHomeApi = RequestGenerator.getServiceApi(ItHomeApi.class);
             }
             return itHomeApi;
         }

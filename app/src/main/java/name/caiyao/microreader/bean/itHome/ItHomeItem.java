@@ -14,6 +14,8 @@ import org.simpleframework.xml.Root;
 public class ItHomeItem implements Parcelable {
     @Attribute(name = "t",required = false)
     private String t;
+    @Attribute(name = "p",required = false)
+    private String p;
     @Element(name = "newsid")
     private String newsid;
     @Element(name = "title")
@@ -49,7 +51,7 @@ public class ItHomeItem implements Parcelable {
     protected ItHomeItem(Parcel in) {
         newsid = in.readString();
         title = in.readString();
-        c = in.readString();
+//        c = in.readString();
         v = in.readString();
         url = in.readString();
         postdate = in.readString();
@@ -60,6 +62,7 @@ public class ItHomeItem implements Parcelable {
         forbidcomment = in.readString();
         tags = in.readString();
         z = in.readString();
+        cid = in.readInt();
     }
 
     public static final Creator<ItHomeItem> CREATOR = new Creator<ItHomeItem>() {
@@ -122,6 +125,15 @@ public class ItHomeItem implements Parcelable {
         this.description = description;
     }
 
+    public int getCid() {
+        return cid;
+    }
+
+    public void setCid(int cid) {
+        this.cid = cid;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -142,5 +154,6 @@ public class ItHomeItem implements Parcelable {
         dest.writeString(forbidcomment);
         dest.writeString(tags);
         dest.writeString(z);
+        dest.writeInt(cid);
     }
 }
